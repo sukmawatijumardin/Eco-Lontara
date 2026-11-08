@@ -13,6 +13,7 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
       background-color: #f4f7f5;
       color: #0f172a;
+      -webkit-tap-highlight-color: transparent;
     }
     .font-serif-title {
       font-family: 'Playfair Display', serif;
@@ -104,13 +105,13 @@
   <header class="lontara-bg text-white relative overflow-hidden border-b-4 border-amber-400 shadow-xl no-print">
     <div class="absolute inset-0 lontara-pattern pointer-events-none"></div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-7 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-5 sm:pt-5 sm:pb-7 relative z-10">
       <!-- Baris Atas: Logo Kiri & Profil Guru Kanan -->
-      <div class="flex items-start justify-between gap-4">
+      <div class="flex items-start justify-between gap-2 sm:gap-4">
         <!-- Identitas & Logo ECO-LONTARA -->
-        <div class="flex items-center gap-3.5 sm:gap-5">
+        <div class="flex items-center gap-2.5 sm:gap-4 md:gap-5">
           <!-- Kotak Logo Baru Eco-Lontara (Klik untuk unggah kustom jika diinginkan) -->
-          <div onclick="document.getElementById('logoUploadInput').click()" title="Klik untuk mengganti logo" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white p-1.5 shadow-lg border-2 border-amber-300/80 flex items-center justify-center cursor-pointer group relative overflow-hidden shrink-0">
+          <div onclick="document.getElementById('logoUploadInput').click()" title="Klik untuk mengganti logo" class="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-xl sm:rounded-2xl bg-white p-1 sm:p-1.5 shadow-lg border-2 border-amber-300/80 flex items-center justify-center cursor-pointer group relative overflow-hidden shrink-0">
             <img id="customLogoImg" src="" alt="Logo Eco-Lontara" class="w-full h-full object-contain hidden" />
             <!-- Vector Art Logo Eco-Lontara Sesuai Gambar -->
             <svg id="defaultLogoSvg" viewBox="0 0 240 240" class="w-full h-full">
@@ -143,16 +144,16 @@
 
           <div>
             <!-- Lencana Sekolah -->
-            <div class="flex flex-wrap items-center gap-2 mb-1.5">
-              <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-amber-400 text-slate-950 shadow-sm">
+            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1 sm:mb-1.5">
+              <span class="inline-flex items-center gap-1 sm:gap-1.5 px-2 py-0.5 sm:px-3 sm:py-0.5 rounded-full text-[8px] sm:text-[11px] font-bold uppercase tracking-wider bg-amber-400 text-slate-950 shadow-sm">
                 <i class="fa-solid fa-school"></i> SMKN 1 PAREPARE
               </span>
             </div>
             <!-- Judul Utama -->
-            <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white drop-shadow flex items-center gap-2.5">
+            <h1 class="text-lg sm:text-2xl md:text-4xl font-extrabold tracking-tight text-white drop-shadow flex items-center gap-1.5 sm:gap-2.5">
               <span>ECO-LONTARA</span>
             </h1>
-            <p class="text-xs sm:text-sm text-emerald-100/90 max-w-2xl mt-1 leading-relaxed italic flex items-center gap-2">
+            <p class="text-[9px] sm:text-xs md:text-sm text-emerald-100/90 max-w-2xl mt-0.5 sm:mt-1 leading-relaxed italic flex items-center gap-2">
               <span>Elektronik Cek Observasi Lingkungan Kantor Tertib, Asri, dan Ramah Alam</span>
             </p>
           </div>
@@ -160,51 +161,51 @@
 
         <!-- Pojok Kanan Atas: Foto & Nama "Sukmawati" Tanpa Kotak Pembungkus -->
         <div class="flex flex-col items-center shrink-0 select-none">
-          <div onclick="document.getElementById('guruPhotoInput').click()" title="Klik untuk unggah/ganti foto" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-amber-300 shadow-md cursor-pointer bg-emerald-800/70 flex items-center justify-center hover:scale-105 transition">
+          <div onclick="document.getElementById('guruPhotoInput').click()" title="Klik untuk unggah/ganti foto" class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full overflow-hidden border-2 border-amber-300 shadow-md cursor-pointer bg-emerald-800/70 flex items-center justify-center hover:scale-105 transition">
             <img id="guruPhotoImg" src="sukma.jpg" alt="Sukmawati" class="w-full h-full object-cover" onerror="this.classList.add('hidden'); document.getElementById('guruPhotoDefaultIcon').classList.remove('hidden');" />
-            <i id="guruPhotoDefaultIcon" class="fa-solid fa-user-tie text-amber-200 text-xl sm:text-2xl hidden"></i>
+            <i id="guruPhotoDefaultIcon" class="fa-solid fa-user-tie text-amber-200 text-lg sm:text-xl md:text-2xl hidden"></i>
           </div>
           <input type="file" id="guruPhotoInput" accept="image/*" class="hidden" onchange="handleGuruPhotoUpload(event)" />
-          <span class="mt-1.5 text-xs sm:text-sm font-bold text-amber-200 tracking-wide drop-shadow">Sukmawati</span>
+          <span class="mt-1 sm:mt-1.5 text-[9px] sm:text-xs md:text-sm font-bold text-amber-200 tracking-wide drop-shadow">Sukmawati</span>
         </div>
       </div>
 
       <!-- Baris Statistik Cepat di Dalam Header -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 mt-6 pt-5 border-t border-emerald-700/60">
-        <div class="bg-white/10 backdrop-blur-md rounded-xl px-3.5 py-2.5 border border-white/15 flex items-center gap-3">
-          <div class="w-9 h-9 rounded-lg bg-amber-400/20 text-amber-300 flex items-center justify-center text-base shrink-0">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-4 mt-4 sm:mt-6 pt-3 sm:pt-5 border-t border-emerald-700/60">
+        <div class="bg-white/10 backdrop-blur-md rounded-lg sm:rounded-xl px-2 py-1.5 sm:px-3.5 sm:py-2.5 border border-white/15 flex items-center gap-1.5 sm:gap-3">
+          <div class="w-6 h-6 sm:w-9 sm:h-9 rounded-md sm:rounded-lg bg-amber-400/20 text-amber-300 flex items-center justify-center text-[10px] sm:text-base shrink-0">
             <i class="fa-solid fa-building-circle-check"></i>
           </div>
           <div>
-            <div class="text-[10px] uppercase tracking-wider text-emerald-200 font-semibold">Instansi Diaudit</div>
-            <div id="statTotalInstansi" class="text-lg sm:text-xl font-extrabold text-white">0 Kantor</div>
+            <div class="text-[8px] sm:text-[10px] uppercase tracking-wider text-emerald-200 font-semibold">Instansi Diaudit</div>
+            <div id="statTotalInstansi" class="text-sm sm:text-lg md:text-xl font-extrabold text-white">0 Kantor</div>
           </div>
         </div>
-        <div class="bg-white/10 backdrop-blur-md rounded-xl px-3.5 py-2.5 border border-white/15 flex items-center gap-3">
-          <div class="w-9 h-9 rounded-lg bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-base shrink-0">
+        <div class="bg-white/10 backdrop-blur-md rounded-lg sm:rounded-xl px-2 py-1.5 sm:px-3.5 sm:py-2.5 border border-white/15 flex items-center gap-1.5 sm:gap-3">
+          <div class="w-6 h-6 sm:w-9 sm:h-9 rounded-md sm:rounded-lg bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-[10px] sm:text-base shrink-0">
             <i class="fa-solid fa-leaf"></i>
           </div>
           <div>
-            <div class="text-[10px] uppercase tracking-wider text-emerald-200 font-semibold">Rata-rata Skor Eco</div>
-            <div id="statAvgSkor" class="text-lg sm:text-xl font-extrabold text-white">0 / 60</div>
+            <div class="text-[8px] sm:text-[10px] uppercase tracking-wider text-emerald-200 font-semibold">Rata-rata Skor Eco</div>
+            <div id="statAvgSkor" class="text-sm sm:text-lg md:text-xl font-extrabold text-white">0 / 60</div>
           </div>
         </div>
-        <div class="bg-white/10 backdrop-blur-md rounded-xl px-3.5 py-2.5 border border-white/15 flex items-center gap-3">
-          <div class="w-9 h-9 rounded-lg bg-yellow-400/20 text-yellow-300 flex items-center justify-center text-base shrink-0">
+        <div class="bg-white/10 backdrop-blur-md rounded-lg sm:rounded-xl px-2 py-1.5 sm:px-3.5 sm:py-2.5 border border-white/15 flex items-center gap-1.5 sm:gap-3">
+          <div class="w-6 h-6 sm:w-9 sm:h-9 rounded-md sm:rounded-lg bg-yellow-400/20 text-yellow-300 flex items-center justify-center text-[10px] sm:text-base shrink-0">
             <i class="fa-solid fa-medal"></i>
           </div>
           <div>
-            <div class="text-[10px] uppercase tracking-wider text-emerald-200 font-semibold">Predikat Gold</div>
-            <div id="statGoldCount" class="text-lg sm:text-xl font-extrabold text-amber-300">0 Instansi</div>
+            <div class="text-[8px] sm:text-[10px] uppercase tracking-wider text-emerald-200 font-semibold">Predikat Gold</div>
+            <div id="statGoldCount" class="text-sm sm:text-lg md:text-xl font-extrabold text-amber-300">0 Instansi</div>
           </div>
         </div>
-        <div class="bg-white/10 backdrop-blur-md rounded-xl px-3.5 py-2.5 border border-white/15 flex items-center gap-3">
-          <div class="w-9 h-9 rounded-lg bg-teal-400/20 text-teal-200 flex items-center justify-center text-base shrink-0">
+        <div class="bg-white/10 backdrop-blur-md rounded-lg sm:rounded-xl px-2 py-1.5 sm:px-3.5 sm:py-2.5 border border-white/15 flex items-center gap-1.5 sm:gap-3">
+          <div class="w-6 h-6 sm:w-9 sm:h-9 rounded-md sm:rounded-lg bg-teal-400/20 text-teal-200 flex items-center justify-center text-[10px] sm:text-base shrink-0">
             <i class="fa-solid fa-clipboard-check"></i>
           </div>
           <div>
-            <div class="text-[10px] uppercase tracking-wider text-emerald-200 font-semibold">Responden Kantor</div>
-            <div id="statRespondenCount" class="text-lg sm:text-xl font-extrabold text-white">0 Respon</div>
+            <div class="text-[8px] sm:text-[10px] uppercase tracking-wider text-emerald-200 font-semibold">Responden Kantor</div>
+            <div id="statRespondenCount" class="text-sm sm:text-lg md:text-xl font-extrabold text-white">0 Respon</div>
           </div>
         </div>
       </div>
@@ -215,29 +216,29 @@
   <nav class="sticky top-0 z-30 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200 no-print">
     <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-2">
       <div class="grid grid-cols-4 gap-1.5 sm:gap-3">
-        <button type="button" onclick="switchTab('katalog')" id="tabBtn-katalog" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs md:text-sm transition-all bg-emerald-800 text-white shadow-sm">
-          <span id="tabBadge-katalog" class="px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 font-extrabold text-[9px] sm:text-[10px] flex items-center gap-1">
+        <button type="button" onclick="switchTab('katalog')" id="tabBtn-katalog" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1 py-1.5 sm:px-2.5 sm:py-2 md:px-3.5 md:py-2.5 rounded-lg sm:rounded-xl font-bold text-[9px] sm:text-[11px] md:text-sm transition-all bg-emerald-800 text-white shadow-md ring-2 ring-emerald-600/30">
+          <span id="tabBadge-katalog" class="px-1 py-0.5 sm:px-1.5 rounded bg-amber-400 text-slate-950 font-extrabold text-[8px] sm:text-[10px] flex items-center gap-1 shadow-sm">
             <i class="fa-solid fa-book-open"></i> 1
           </span>
           <span class="truncate">Etalase Katalog</span>
         </button>
 
-        <button type="button" onclick="switchTab('generator')" id="tabBtn-generator" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs md:text-sm transition-all bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800">
-          <span id="tabBadge-generator" class="px-1.5 py-0.5 rounded bg-slate-300 text-slate-800 font-extrabold text-[9px] sm:text-[10px] flex items-center gap-1">
+        <button type="button" onclick="switchTab('generator')" id="tabBtn-generator" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1 py-1.5 sm:px-2.5 sm:py-2 md:px-3.5 md:py-2.5 rounded-lg sm:rounded-xl font-bold text-[9px] sm:text-[11px] md:text-sm transition-all bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800">
+          <span id="tabBadge-generator" class="px-1 py-0.5 sm:px-1.5 rounded bg-slate-300 text-slate-800 font-extrabold text-[8px] sm:text-[10px] flex items-center gap-1">
             <i class="fa-solid fa-file-circle-plus"></i> 2
           </span>
           <span class="truncate">Tambahkan Karya</span>
         </button>
 
-        <button type="button" onclick="switchTab('panduan')" id="tabBtn-panduan" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs md:text-sm transition-all bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800">
-          <span id="tabBadge-panduan" class="px-1.5 py-0.5 rounded bg-slate-300 text-slate-800 font-extrabold text-[9px] sm:text-[10px] flex items-center gap-1">
+        <button type="button" onclick="switchTab('panduan')" id="tabBtn-panduan" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1 py-1.5 sm:px-2.5 sm:py-2 md:px-3.5 md:py-2.5 rounded-lg sm:rounded-xl font-bold text-[9px] sm:text-[11px] md:text-sm transition-all bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800">
+          <span id="tabBadge-panduan" class="px-1 py-0.5 sm:px-1.5 rounded bg-slate-300 text-slate-800 font-extrabold text-[8px] sm:text-[10px] flex items-center gap-1">
             <i class="fa-solid fa-compass-drafting"></i> 3
           </span>
           <span class="truncate">Panduan &amp; Rubrik</span>
         </button>
 
-        <button type="button" onclick="switchTab('evaluasi')" id="tabBtn-evaluasi" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs md:text-sm transition-all bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800">
-          <span id="tabBadge-evaluasi" class="px-1.5 py-0.5 rounded bg-slate-300 text-slate-800 font-extrabold text-[9px] sm:text-[10px] flex items-center gap-1">
+        <button type="button" onclick="switchTab('evaluasi')" id="tabBtn-evaluasi" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1 py-1.5 sm:px-2.5 sm:py-2 md:px-3.5 md:py-2.5 rounded-lg sm:rounded-xl font-bold text-[9px] sm:text-[11px] md:text-sm transition-all bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800">
+          <span id="tabBadge-evaluasi" class="px-1 py-0.5 sm:px-1.5 rounded bg-slate-300 text-slate-800 font-extrabold text-[8px] sm:text-[10px] flex items-center gap-1">
             <i class="fa-solid fa-user-check"></i> 4
           </span>
           <span class="truncate">Evaluasi Guru</span>
@@ -1463,7 +1464,7 @@
         const savedPhoto = localStorage.getItem('ecoLontara_guruPhoto');
         if (savedPhoto) {
           const img = document.getElementById('guruPhotoImg');
-          const avatar = document.getElementById('guruPhotoDefaultAvatar');
+          const avatar = document.getElementById('guruPhotoDefaultIcon');
           if (img) {
             img.src = savedPhoto;
             img.classList.remove('hidden');
@@ -1480,7 +1481,7 @@
       reader.onload = function(e) {
         const dataUrl = e.target.result;
         const img = document.getElementById('guruPhotoImg');
-        const avatar = document.getElementById('guruPhotoDefaultAvatar');
+        const avatar = document.getElementById('guruPhotoDefaultIcon');
         if (img) {
           img.src = dataUrl;
           img.classList.remove('hidden');
@@ -1502,10 +1503,10 @@
         if (section) section.classList.add('hidden');
 
         if (btn) {
-          btn.className = 'tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs md:text-sm transition-all bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800';
+          btn.className = 'tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1 py-1.5 sm:px-2.5 sm:py-2 md:px-3.5 md:py-2.5 rounded-lg sm:rounded-xl font-bold text-[9px] sm:text-[11px] md:text-sm transition-all bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800';
         }
         if (badge) {
-          badge.className = 'px-1.5 py-0.5 rounded bg-slate-300 text-slate-800 font-extrabold text-[9px] sm:text-[10px] flex items-center gap-1 transition-all';
+          badge.className = 'px-1 py-0.5 sm:px-1.5 rounded bg-slate-300 text-slate-800 font-extrabold text-[8px] sm:text-[10px] flex items-center gap-1 transition-all';
         }
       });
 
@@ -1515,10 +1516,10 @@
 
       if (activeSection) activeSection.classList.remove('hidden');
       if (activeBtn) {
-        activeBtn.className = 'tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs md:text-sm transition-all bg-emerald-800 text-white shadow-md ring-2 ring-emerald-600/30';
+        activeBtn.className = 'tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1 py-1.5 sm:px-2.5 sm:py-2 md:px-3.5 md:py-2.5 rounded-lg sm:rounded-xl font-bold text-[9px] sm:text-[11px] md:text-sm transition-all bg-emerald-800 text-white shadow-md ring-2 ring-emerald-600/30';
       }
       if (activeBadge) {
-        activeBadge.className = 'px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 font-extrabold text-[9px] sm:text-[10px] flex items-center gap-1 transition-all shadow-sm';
+        activeBadge.className = 'px-1 py-0.5 sm:px-1.5 rounded bg-amber-400 text-slate-950 font-extrabold text-[8px] sm:text-[10px] flex items-center gap-1 transition-all shadow-sm';
       }
 
       if (tabName === 'generator') {
