@@ -1,0 +1,2048 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECO-LONTARA | SMKN 1 Parepare</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #f4f7f5;
+      color: #0f172a;
+    }
+    .font-serif-title {
+      font-family: 'Playfair Display', serif;
+    }
+    /* Ornamen Lontara & Bugis */
+    .lontara-bg {
+      background-color: #064e3b;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(16, 185, 129, 0.22) 0%, transparent 45%),
+        radial-gradient(circle at 85% 80%, rgba(217, 119, 6, 0.2) 0%, transparent 45%),
+        linear-gradient(135deg, #042f2e 0%, #064e3b 50%, #065f46 100%);
+    }
+    .lontara-pattern {
+      background-image: url("data:image/svg+xml,%3Csvg width='52' height='52' viewBox='0 0 52 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%23fbbf24' stroke-width='0.8' stroke-opacity='0.14'%3E%3Cpath d='M26 0l26 26-26 26L0 26z'/%3E%3Cpath d='M26 10l16 16-16 16-16-16z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    /* Efek Buku / Majalah 3D */
+    .book-card {
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .book-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 22px 40px -12px rgba(6, 78, 59, 0.22);
+    }
+    .book-spine {
+      position: relative;
+    }
+    .book-spine::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 10px;
+      background: linear-gradient(90deg, rgba(0,0,0,0.45) 0%, rgba(255,255,255,0.2) 45%, rgba(0,0,0,0.12) 100%);
+      z-index: 10;
+      border-top-left-radius: 0.75rem;
+      border-bottom-left-radius: 0.75rem;
+    }
+    /* Custom Slider */
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      background: transparent;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 8px;
+      cursor: pointer;
+      background: #e2e8f0;
+      border-radius: 999px;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      height: 22px;
+      width: 22px;
+      border-radius: 50%;
+      background: #059669;
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -7px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      border: 2px solid #ffffff;
+    }
+    /* Print Styles */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printArea, #printArea * {
+        visibility: visible;
+      }
+      #printArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-shadow: none !important;
+        margin: 0 !important;
+        padding: 16px !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-emerald-600 selection:text-white">
+
+  <!-- HEADER UTAMA KOMPLEKS & BERORNAMEN -->
+  <header class="lontara-bg text-white relative overflow-hidden border-b-4 border-amber-400 shadow-xl no-print">
+    <div class="absolute inset-0 lontara-pattern pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-7 relative z-10">
+      <!-- Baris Atas: Logo Kiri & Profil Guru Kanan -->
+      <div class="flex items-start justify-between gap-4">
+        <!-- Identitas & Logo ECO-LONTARA -->
+        <div class="flex items-center gap-3.5 sm:gap-5">
+          <!-- Kotak Logo Baru Eco-Lontara (Klik untuk unggah kustom jika diinginkan) -->
+          <div onclick="document.getElementById('logoUploadInput').click()" title="Klik untuk mengganti logo" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white p-1.5 shadow-lg border-2 border-amber-300/80 flex items-center justify-center cursor-pointer group relative overflow-hidden shrink-0">
+            <img id="customLogoImg" src="" alt="Logo Eco-Lontara" class="w-full h-full object-contain hidden" />
+            <!-- Vector Art Logo Eco-Lontara Sesuai Gambar -->
+            <svg id="defaultLogoSvg" viewBox="0 0 240 240" class="w-full h-full">
+              <!-- Lingkaran Ornamen Coklat-Hijau -->
+              <circle cx="120" cy="108" r="82" fill="#ffffff" stroke="#8c7355" stroke-width="6" stroke-dasharray="360 40" stroke-dashoffset="25"/>
+              <!-- Sulur Bawah Coklat & Daun Lembayung -->
+              <path d="M58 158 C85 190, 145 195, 185 155 C165 170, 125 175, 95 155 C110 150, 125 140, 130 130" fill="none" stroke="#8c7355" stroke-width="5" stroke-linecap="round"/>
+              <path d="M105 168 C135 150, 165 168, 190 142 C175 182, 135 185, 105 168 Z" fill="#8fb38d"/>
+              <!-- Sulur Kanan Atas -->
+              <path d="M135 30 C165 38, 185 65, 175 95 C170 72, 150 65, 142 52 C136 44, 148 36, 152 44" fill="none" stroke="#8c7355" stroke-width="4.5" stroke-linecap="round"/>
+              <!-- Daun Kecil Kanan -->
+              <path d="M155 72 C168 68, 178 82, 168 98 C156 92, 152 82, 155 72 Z" fill="#8fb38d"/>
+              <path d="M128 75 C138 65, 152 70, 145 86 C135 86, 128 82, 128 75 Z" fill="#8fb38d"/>
+              <!-- Batang & Daun Utama Kiri -->
+              <path d="M68 150 C80 125, 78 90, 92 60" fill="none" stroke="#234d32" stroke-width="6" stroke-linecap="round"/>
+              <!-- Daun Besar Puncak -->
+              <path d="M88 74 C92 42, 118 32, 142 22 C145 52, 128 74, 88 74 Z" fill="#68a347" stroke="#234d32" stroke-width="4" stroke-linejoin="round"/>
+              <path d="M92 70 C108 55, 120 45, 132 34" fill="none" stroke="#234d32" stroke-width="3" stroke-linecap="round"/>
+              <!-- Daun Sedang Kiri -->
+              <path d="M82 95 C64 78, 66 56, 74 44 C90 56, 94 76, 82 95 Z" fill="#68a347" stroke="#234d32" stroke-width="3.8" stroke-linejoin="round"/>
+              <!-- Daun Bawah Kiri -->
+              <path d="M77 118 C58 108, 52 94, 54 82 C70 88, 78 102, 77 118 Z" fill="#68a347" stroke="#234d32" stroke-width="3.5" stroke-linejoin="round"/>
+              <!-- Teks Kaligrafi 'Eco' -->
+              <text x="122" y="132" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-style="italic" font-size="56" fill="#234d32">Eco</text>
+              <!-- Teks Bawah 'ECO-LONTARA' -->
+              <text x="120" y="222" text-anchor="middle" font-family="sans-serif" font-weight="900" font-size="25" letter-spacing="1.5" fill="#234d32">ECO-LONTARA</text>
+            </svg>
+            <input type="file" id="logoUploadInput" accept="image/*" class="hidden" onchange="handleLogoUpload(event)" />
+          </div>
+
+          <div>
+            <!-- Lencana Sekolah -->
+            <div class="flex flex-wrap items-center gap-2 mb-1.5">
+              <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-amber-400 text-slate-950 shadow-sm">
+                <i class="fa-solid fa-school"></i> SMKN 1 PAREPARE
+              </span>
+            </div>
+            <!-- Judul Utama -->
+            <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white drop-shadow flex items-center gap-2.5">
+              <span>ECO-LONTARA</span>
+            </h1>
+            <p class="text-xs sm:text-sm text-emerald-100/90 max-w-2xl mt-1 leading-relaxed italic flex items-center gap-2">
+              <span>Elektronik Cek Observasi Lingkungan Kantor Tertib, Asri, dan Ramah Alam</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Pojok Kanan Atas: Foto & Nama "Sukmawati" Tanpa Kotak Pembungkus -->
+        <div class="flex flex-col items-center shrink-0 select-none">
+          <div onclick="document.getElementById('guruPhotoInput').click()" title="Klik untuk unggah/ganti foto" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-amber-300 shadow-md cursor-pointer bg-emerald-800/70 flex items-center justify-center hover:scale-105 transition">
+            <img id="guruPhotoImg" src="" alt="Sukmawati" class="w-full h-full object-cover hidden" />
+            <i id="guruPhotoDefaultIcon" class="fa-solid fa-user-tie text-amber-200 text-xl sm:text-2xl"></i>
+          </div>
+          <input type="file" id="guruPhotoInput" accept="image/*" class="hidden" onchange="handleGuruPhotoUpload(event)" />
+          <span class="mt-1.5 text-xs sm:text-sm font-bold text-amber-200 tracking-wide drop-shadow">Sukmawati</span>
+        </div>
+      </div>
+
+      <!-- Baris Statistik Cepat di Dalam Header -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 mt-6 pt-5 border-t border-emerald-700/60">
+        <div class="bg-white/10 backdrop-blur-md rounded-xl px-3.5 py-2.5 border border-white/15 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-amber-400/20 text-amber-300 flex items-center justify-center text-base shrink-0">
+            <i class="fa-solid fa-building-circle-check"></i>
+          </div>
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-emerald-200 font-semibold">Instansi Diaudit</div>
+            <div id="statTotalInstansi" class="text-lg sm:text-xl font-extrabold text-white">0 Kantor</div>
+          </div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-md rounded-xl px-3.5 py-2.5 border border-white/15 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-base shrink-0">
+            <i class="fa-solid fa-leaf"></i>
+          </div>
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-emerald-200 font-semibold">Rata-rata Skor Eco</div>
+            <div id="statAvgSkor" class="text-lg sm:text-xl font-extrabold text-white">0 / 60</div>
+          </div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-md rounded-xl px-3.5 py-2.5 border border-white/15 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-yellow-400/20 text-yellow-300 flex items-center justify-center text-base shrink-0">
+            <i class="fa-solid fa-medal"></i>
+          </div>
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-emerald-200 font-semibold">Predikat Gold</div>
+            <div id="statGoldCount" class="text-lg sm:text-xl font-extrabold text-amber-300">0 Instansi</div>
+          </div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-md rounded-xl px-3.5 py-2.5 border border-white/15 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-teal-400/20 text-teal-200 flex items-center justify-center text-base shrink-0">
+            <i class="fa-solid fa-clipboard-check"></i>
+          </div>
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-emerald-200 font-semibold">Responden Kantor</div>
+            <div id="statRespondenCount" class="text-lg sm:text-xl font-extrabold text-white">0 Respon</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- BILAH NAVIGASI 4 MENU UTAMA (TAMPIL UTUH TANPA SCROLL) -->
+  <nav class="sticky top-0 z-30 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200 no-print">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-2">
+      <div class="grid grid-cols-4 gap-1.5 sm:gap-3">
+        <button onclick="switchTab('katalog')" id="tabBtn-katalog" class="tab-btn active-tab flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs md:text-sm transition-all bg-emerald-800 text-white shadow-sm">
+          <span class="px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 font-extrabold text-[9px] sm:text-[10px]">1</span>
+          <span class="truncate">Etalase Katalog</span>
+        </button>
+
+        <button onclick="switchTab('generator')" id="tabBtn-generator" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs md:text-sm transition-all bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800">
+          <span class="px-1.5 py-0.5 rounded bg-slate-300 text-slate-800 font-extrabold text-[9px] sm:text-[10px]">2</span>
+          <span class="truncate">Tambahkan Karya</span>
+        </button>
+
+        <button onclick="switchTab('panduan')" id="tabBtn-panduan" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs md:text-sm transition-all bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800">
+          <span class="px-1.5 py-0.5 rounded bg-slate-300 text-slate-800 font-extrabold text-[9px] sm:text-[10px]">3</span>
+          <span class="truncate">Panduan &amp; Rubrik</span>
+        </button>
+
+        <button onclick="switchTab('evaluasi')" id="tabBtn-evaluasi" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs md:text-sm transition-all bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800">
+          <span class="px-1.5 py-0.5 rounded bg-slate-300 text-slate-800 font-extrabold text-[9px] sm:text-[10px]">4</span>
+          <span class="truncate">Evaluasi Guru</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- KONTEN UTAMA -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 no-print">
+
+    <!-- ===================================================== -->
+    <!-- TAB 1: ETALASE KATALOG DIGITAL                        -->
+    <!-- ===================================================== -->
+    <section id="tab-katalog" class="space-y-6">
+      <!-- Banner Aksi Cepat Responden Instansi & Tambah Karya -->
+      <div class="rounded-2xl bg-gradient-to-r from-emerald-900 via-emerald-800 to-teal-900 text-white p-5 sm:p-6 shadow-lg border border-emerald-700/60 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+        <div class="space-y-1.5">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/20 border border-amber-300/40 text-amber-300 text-xs font-bold">
+            <i class="fa-solid fa-handshake-angle"></i> Partisipasi Instansi Mitra di Kota Parepare
+          </div>
+          <h2 class="text-lg sm:text-xl font-extrabold">Kuesioner Observasi Responden Instansi &amp; Etalase Kampanye Siswa</h2>
+          <p class="text-xs sm:text-sm text-emerald-100/90 max-w-3xl">
+            Perwakilan instansi/kantor dapat mengisi kuesioner 15 indikator Eco-Green dan mengunggah foto poster/bukti. Hasilnya otomatis masuk ke menu <strong>Tambahkan Karya</strong> untuk dilengkapi oleh kelompok siswa.
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2.5 shrink-0 w-full lg:w-auto">
+          <button onclick="openQuestionnaireModal()" class="flex-1 lg:flex-initial inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs sm:text-sm shadow-md transition">
+            <i class="fa-solid fa-file-signature"></i>
+            <span>Isi Kuesioner Responden Instansi</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter & Pencarian Rak Katalog -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3.5">
+        <div class="flex flex-wrap items-center gap-1.5">
+          <button onclick="setFilter('ALL')" id="filter-ALL" class="filter-pill px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-800 text-white transition">
+            Semua Kategori
+          </button>
+          <button onclick="setFilter('Instansi Pemerintah')" id="filter-Instansi Pemerintah" class="filter-pill px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-emerald-50 transition">
+            Pemerintah
+          </button>
+          <button onclick="setFilter('BUMN / Perbankan')" id="filter-BUMN / Perbankan" class="filter-pill px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-emerald-50 transition">
+            BUMN / Perbankan
+          </button>
+          <button onclick="setFilter('Perusahaan Swasta')" id="filter-Perusahaan Swasta" class="filter-pill px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-emerald-50 transition">
+            Swasta
+          </button>
+          <button onclick="setFilter('Unit Sekolah / Pendidikan')" id="filter-Unit Sekolah / Pendidikan" class="filter-pill px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-emerald-50 transition">
+            Sekolah / Pendidikan
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2 w-full md:w-auto">
+          <div class="relative flex-1 md:w-64">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+            <input type="text" id="searchInput" oninput="renderCatalog()" placeholder="Cari instansi, kelompok, poster..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+          </div>
+          <button onclick="resetToDefaultCatalog()" title="Kembalikan Data & Tampilan Awal" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-amber-100 text-slate-700 hover:text-amber-900 font-bold text-xs transition flex items-center gap-1.5 shrink-0">
+            <i class="fa-solid fa-rotate-left"></i>
+            <span class="hidden sm:inline">Tampilan Awal</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Rak Buku Digital 3D -->
+      <div id="catalogGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+
+    <!-- ===================================================== -->
+    <!-- TAB 2: GENERATOR LAPORAN & UNGGAH KARYA SISWA          -->
+    <!-- ===================================================== -->
+    <section id="tab-generator" class="hidden space-y-6">
+      <!-- Layar Kunci Kredensial Siswa / Guru -->
+      <div id="studentPinGate" class="max-w-md mx-auto bg-white rounded-2xl p-6 sm:p-8 shadow-md border border-slate-200 text-center space-y-4">
+        <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl mx-auto">
+          <i class="fa-solid fa-user-lock"></i>
+        </div>
+        <div>
+          <h2 class="text-lg font-extrabold text-slate-900">Akses Khusus Siswa &amp; Guru</h2>
+          <p class="text-xs text-slate-500 mt-1">Halaman <strong>Tambahkan Karya</strong> hanya dapat diakses oleh Siswa dan Guru. Masukkan Password Akses untuk melanjutkan.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="password" id="studentPinInput" onkeydown="if(event.key==='Enter') checkStudentPin()" placeholder="Masukkan Password Siswa / Guru" class="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 text-center font-bold tracking-widest text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+          <button type="button" onclick="checkStudentPin()" class="px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs sm:text-sm transition">
+            Masuk
+          </button>
+        </div>
+        <p id="studentPinError" class="text-xs text-red-600 font-bold hidden">Password salah! Silakan hubungi Guru Pengampu untuk mendapatkan akses.</p>
+      </div>
+
+      <!-- Konten Utama Form Tambahkan Karya (Terbuka Setelah Login Siswa/Guru) -->
+      <div id="generatorProtectedContent" class="hidden space-y-6">
+        <!-- Bar Info Status Login Siswa/Guru -->
+        <div class="bg-emerald-900 text-white px-4 py-2.5 rounded-xl flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2 font-bold">
+            <i class="fa-solid fa-shield-check text-amber-400"></i>
+            <span>Akses Terverifikasi (Mode Siswa / Guru Aktif)</span>
+          </div>
+          <button type="button" onclick="logoutStudentGate()" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-amber-300 font-bold transition">
+            <i class="fa-solid fa-lock mr-1"></i>Kunci Kembali
+          </button>
+        </div>
+
+        <!-- Banner Sinkronisasi Responden Instansi -->
+        <div class="bg-gradient-to-r from-amber-50 via-emerald-50 to-teal-50 rounded-2xl p-4 sm:p-5 border border-emerald-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="inline-flex items-center gap-1.5 text-xs font-extrabold text-emerald-900 uppercase tracking-wider">
+              <i class="fa-solid fa-link text-amber-600"></i> Terkoneksi dengan Kuesioner Responden Instansi
+            </div>
+            <p class="text-xs text-slate-600">
+              Pilih hasil pengisian kuesioner dari responden instansi di bawah ini agar data instansi, foto poster, dan testimoni terhubung ke laporan siswa.
+            </p>
+          </div>
+          <button type="button" onclick="openQuestionnaireModal()" class="shrink-0 px-4 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs shadow transition flex items-center gap-2">
+            <i class="fa-solid fa-clipboard-list"></i>
+            <span>Buka Kuesioner Responden</span>
+          </button>
+        </div>
+
+        <!-- Daftar Antrean Hasil Kuesioner Responden yang Siap Dilengkapi Siswa -->
+        <div id="pendingQuestionnaireBox" class="bg-white rounded-2xl p-4 sm:p-5 border border-amber-300 shadow-sm hidden">
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <h3 class="text-xs sm:text-sm font-extrabold text-slate-800 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
+              <span>Data Hasil Kuesioner Responden Instansi (Klik untuk Muat ke Formulir Siswa)</span>
+            </h3>
+            <span id="pendingCountBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800">0 Data</span>
+        </div>
+        <div id="pendingQuestionnaireList" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+      </div>
+
+      <form id="karyaForm" onsubmit="handleFormSubmit(event)" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Kolom Kiri (Bagian 1, 2, 3) -->
+        <div class="lg:col-span-8 space-y-6">
+          <!-- Bagian 1: Identitas Pengamat & Instansi Tujuan -->
+          <div class="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-slate-200/80 space-y-4">
+            <div class="border-b border-slate-100 pb-3">
+              <h3 class="text-base sm:text-lg font-extrabold text-slate-900">Bagian 1 • Identitas Pengamat &amp; Instansi Tujuan</h3>
+              <p class="text-xs text-slate-500">Instansi yang sudah dipilih oleh kelompok lain tidak dapat dipilih kembali.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Kelompok &amp; Anggota Siswa *</label>
+                <input type="text" id="f_kelompok" required placeholder="Contoh: Kelompok 1 (Andi, Siti, Budi)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Kelas *</label>
+                <input type="text" id="f_kelas" required value="X MPLB" placeholder="Contoh: X MPLB" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Pilih / Ketik Nama Instansi di Parepare *</label>
+                <select id="f_instansiSelect" onchange="handleInstansiSelectChange()" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 mb-2"></select>
+                <input type="text" id="f_instansiManual" placeholder="Ketik nama instansi secara manual..." class="w-full px-3.5 py-2.5 rounded-xl border border-amber-400 bg-amber-50/40 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 hidden" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Kategori Instansi *</label>
+                <select id="f_kategori" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600">
+                  <option value="Instansi Pemerintah">Instansi Pemerintah</option>
+                  <option value="BUMN / Perbankan">BUMN / Perbankan</option>
+                  <option value="Perusahaan Swasta">Perusahaan Swasta</option>
+                  <option value="Unit Sekolah / Pendidikan">Unit Sekolah / Pendidikan</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bagian 2: Audit Skor 3 Pilar Eco-Green -->
+          <div class="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-slate-200/80 space-y-5">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+              <div>
+                <h3 class="text-base sm:text-lg font-extrabold text-slate-900">Bagian 2 • Audit Skor 3 Pilar Eco-Green</h3>
+                <p class="text-xs text-slate-500">Skala 1–20 per pilar (Total Maksimal 60 Poin) • Geser slider atau ketik angka</p>
+              </div>
+              <div class="flex items-center gap-3 bg-emerald-950 text-white px-4 py-2 rounded-xl">
+                <div class="text-right">
+                  <span class="text-[10px] uppercase tracking-wider text-emerald-200 block">Total Skor:</span>
+                  <span class="text-lg font-extrabold"><span id="liveTotalSkor">44</span><span class="text-xs text-emerald-300">/60</span></span>
+                </div>
+                <span id="livePredikatBadge" class="px-2.5 py-1 rounded-lg text-xs font-extrabold bg-slate-200 text-slate-900">Silver</span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <!-- Pilar 1 -->
+              <div class="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200/80 space-y-2.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-extrabold text-emerald-950">1. Hemat Kertas</span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-200 text-emerald-900">Maks 20</span>
+                </div>
+                <p class="text-[11px] text-slate-600 leading-relaxed">Paperless/E-Office, pemakaian kertas bekas (reuse), cetak dua sisi (duplex).</p>
+                <div class="pt-1">
+                  <div class="flex justify-between text-xs font-bold text-emerald-900 mb-1">
+                    <span>Skor Pilar 1:</span>
+                    <span id="valP1">15</span>
+                  </div>
+                  <input type="range" id="f_pilar1" min="1" max="20" value="15" oninput="updateLiveScore()" />
+                </div>
+              </div>
+
+              <!-- Pilar 2 -->
+              <div class="p-4 rounded-xl bg-amber-50/70 border border-amber-200/80 space-y-2.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-extrabold text-amber-950">2. Listrik &amp; Air</span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-200 text-amber-900">Maks 20</span>
+                </div>
+                <p class="text-[11px] text-slate-600 leading-relaxed">Suhu AC 24-26°C, ventilasi cahaya alami, lampu LED, keran air hemat.</p>
+                <div class="pt-1">
+                  <div class="flex justify-between text-xs font-bold text-amber-900 mb-1">
+                    <span>Skor Pilar 2:</span>
+                    <span id="valP2">15</span>
+                  </div>
+                  <input type="range" id="f_pilar2" min="1" max="20" value="15" oninput="updateLiveScore()" />
+                </div>
+              </div>
+
+              <!-- Pilar 3 -->
+              <div class="p-4 rounded-xl bg-teal-50/70 border border-teal-200/80 space-y-2.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-extrabold text-teal-950">3. Hijau &amp; Sampah</span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-teal-200 text-teal-900">Maks 20</span>
+                </div>
+                <p class="text-[11px] text-slate-600 leading-relaxed">Tempat sampah terpilah, tanaman indoor/outdoor, tumbler, budaya 5R.</p>
+                <div class="pt-1">
+                  <div class="flex justify-between text-xs font-bold text-teal-900 mb-1">
+                    <span>Skor Pilar 3:</span>
+                    <span id="valP3">14</span>
+                  </div>
+                  <input type="range" id="f_pilar3" min="1" max="20" value="14" oninput="updateLiveScore()" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bagian 3: Konten Laporan Audit & Rekomendasi Solusi -->
+          <div class="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-slate-200/80 space-y-4">
+            <div class="border-b border-slate-100 pb-3">
+              <h3 class="text-base sm:text-lg font-extrabold text-slate-900">Bagian 3 • Konten Laporan Audit &amp; Rekomendasi Solusi</h3>
+              <p class="text-xs text-slate-500">Uraian fakta budaya positif, temuan pemborosan, dan 3 solusi aplikatif.</p>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Ringkasan Fakta &amp; Budaya Positif di Kantor (Best Practice) *</label>
+              <textarea id="f_faktaPositif" rows="3" required placeholder="Deskripsikan kebiasaan ramah lingkungan yang sudah berjalan baik di instansi..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Permasalahan Lingkungan / Pemborosan yang Ditemukan *</label>
+              <textarea id="f_permasalahan" rows="2" required placeholder="Deskripsikan temuan pemborosan kertas, energi, atau pengelolaan sampah yang belum optimal..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"></textarea>
+            </div>
+
+            <div class="space-y-2.5 pt-1">
+              <label class="block text-xs font-extrabold text-slate-800">3 Rekomendasi Solusi Siswa (Berdasarkan 3 Pilar):</label>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <span class="text-[11px] font-bold text-emerald-800 block mb-1">1. Kertas</span>
+                  <input type="text" id="f_solusi1" required placeholder="Solusi penghematan kertas..." class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+                </div>
+                <div>
+                  <span class="text-[11px] font-bold text-amber-800 block mb-1">2. Energi</span>
+                  <input type="text" id="f_solusi2" required placeholder="Solusi hemat listrik & air..." class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+                </div>
+                <div>
+                  <span class="text-[11px] font-bold text-teal-800 block mb-1">3. Sampah</span>
+                  <input type="text" id="f_solusi3" required placeholder="Solusi penghijauan & sampah..." class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kolom Kanan (Bagian 4: Karya Poster & Submit) -->
+        <div class="lg:col-span-4 space-y-6">
+          <div class="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-slate-200/80 space-y-4 sticky top-20">
+            <div class="border-b border-slate-100 pb-3">
+              <h3 class="text-base sm:text-lg font-extrabold text-slate-900">Bagian 4 • Karya Poster</h3>
+              <p class="text-xs text-slate-500">Unggah poster kampanye &amp; tautan PDF</p>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Judul Poster Kampanye *</label>
+              <input type="text" id="f_judulPoster" required placeholder="Contoh: Satu Lembar Sejuta Pohon" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Tagline / Slogan Kampanye *</label>
+              <input type="text" id="f_tagline" required placeholder="Contoh: Kantor Cerdas Tanpa Kertas" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+            </div>
+
+            <!-- Kotak Pilih Poster -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1.5">Klik Pilih Poster (JPG/PNG)</label>
+              <div onclick="document.getElementById('f_posterInput').click()" class="border-2 border-dashed border-emerald-300 hover:border-emerald-600 rounded-2xl p-4 text-center cursor-pointer bg-emerald-50/40 transition group">
+                <img id="posterPreviewImg" src="" alt="Preview Poster" class="w-full h-48 object-cover rounded-xl mb-2 hidden shadow" />
+                <div id="posterPlaceholder" class="py-6 space-y-2">
+                  <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 mx-auto flex items-center justify-center text-xl group-hover:scale-110 transition">
+                    <i class="fa-solid fa-image"></i>
+                  </div>
+                  <div class="text-xs font-extrabold text-emerald-900">Pilih File Poster</div>
+                  <p class="text-[11px] text-slate-500">Tersimpan otomatis ke katalog saat diterbitkan.</p>
+                </div>
+              </div>
+              <input type="file" id="f_posterInput" accept="image/*" class="hidden" onchange="handlePosterFile(event)" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Link File Laporan PDF / Flipbook (Opsional)</label>
+              <input type="url" id="f_pdfLink" placeholder="https://drive.google.com/..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+            </div>
+
+            <!-- Box Info Hasil Responden (Jika Terhubung dari Kuesioner) -->
+            <div id="linkedRespondenAlert" class="hidden p-3 rounded-xl bg-amber-50 border border-amber-300 text-xs space-y-1">
+              <div class="font-extrabold text-amber-900 flex items-center gap-1.5">
+                <i class="fa-solid fa-circle-check text-emerald-600"></i> Terhubung dengan Responden Instansi:
+              </div>
+              <div id="linkedRespondenText" class="text-slate-700 font-medium"></div>
+            </div>
+
+            <!-- Data Responden Tersembunyi (Diisi otomatis bila lewat kuesioner) -->
+            <input type="hidden" id="f_namaResponden" value="">
+            <input type="hidden" id="f_jabatanResponden" value="">
+            <input type="hidden" id="f_skorResponden" value="">
+            <input type="hidden" id="f_testimoniResponden" value="">
+            <input type="hidden" id="f_pendingId" value="">
+
+            <!-- Tombol Submit -->
+            <div class="space-y-2.5 pt-2 border-t border-slate-100">
+              <button type="submit" id="btnSubmitKarya" class="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-emerald-800 to-teal-800 hover:from-emerald-900 hover:to-teal-900 text-white font-extrabold text-xs sm:text-sm shadow-xl transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Simpan &amp; Terbitkan ke Katalog Digital</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+      </div>
+    </section>
+
+    <!-- ===================================================== -->
+    <!-- TAB 3: PANDUAN OBSERVASI & RUBRIK PENILAIAN            -->
+    <!-- ===================================================== -->
+    <section id="tab-panduan" class="hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+          <div>
+            <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-700">Pedoman Proyek Kolaboratif MPLB</span>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">3 Pilar Audit Eco-Office &amp; Kriteria Predikat Katalog</h2>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1.5 rounded-xl bg-amber-100 text-amber-900 font-extrabold text-xs">Gold: 46–60 Poin</span>
+            <span class="px-3 py-1.5 rounded-xl bg-slate-200 text-slate-800 font-extrabold text-xs">Silver: 31–45 Poin</span>
+            <span class="px-3 py-1.5 rounded-xl bg-orange-100 text-orange-900 font-extrabold text-xs">Bronze: 1–30 Poin</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-2.5">
+            <div class="w-10 h-10 rounded-xl bg-emerald-700 text-white flex items-center justify-center font-bold">1</div>
+            <h3 class="font-extrabold text-slate-900">Pilar 1: Efisiensi Kertas (Paperless)</h3>
+            <ul class="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
+              <li>Penggunaan aplikasi persuratan digital (E-Office / Srikandi / WhatsApp Dinas).</li>
+              <li>Pemanfaatan kembali kertas bekas satu sisi untuk draf internal.</li>
+              <li>Pengaturan cetak dua sisi (duplex) untuk penghematan arsip fisik.</li>
+            </ul>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-2.5">
+            <div class="w-10 h-10 rounded-xl bg-amber-600 text-white flex items-center justify-center font-bold">2</div>
+            <h3 class="font-extrabold text-slate-900">Pilar 2: Konservasi Listrik &amp; Air</h3>
+            <ul class="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
+              <li>Pengaturan suhu AC ruang kerja stabil pada suhu hemat energi 24°C–26°C.</li>
+              <li>Mematikan lampu, layar komputer, dan AC saat jam istirahat/pulang.</li>
+              <li>Optimalisasi ventilasi dan pencahayaan alami matahari di siang hari.</li>
+            </ul>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-teal-50/70 border border-teal-200 space-y-2.5">
+            <div class="w-10 h-10 rounded-xl bg-teal-700 text-white flex items-center justify-center font-bold">3</div>
+            <h3 class="font-extrabold text-slate-900">Pilar 3: Ruang Hijau &amp; Kelola Sampah</h3>
+            <ul class="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
+              <li>Ketersediaan tempat sampah terpilah (Organik, Anorganik, B3).</li>
+              <li>Kehadiran tanaman hidup di meja kerja/sudut ruang kantor (indoor plant).</li>
+              <li>Budaya membawa tumbler minum &amp; pengurangan plastik sekali pakai.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Tabel Rubrik Penilaian Guru -->
+        <div class="pt-4">
+          <h3 class="text-base font-extrabold text-slate-900 mb-3">Rubrik Penilaian Guru (4 Dimensi Utama)</h3>
+          <div class="overflow-x-auto rounded-xl border border-slate-200">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-emerald-900 text-white">
+                  <th class="p-3.5 font-bold">Dimensi Penilaian</th>
+                  <th class="p-3.5 font-bold">Bobot</th>
+                  <th class="p-3.5 font-bold">Indikator Keberhasilan</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr class="hover:bg-slate-50">
+                  <td class="p-3.5 font-bold text-slate-900">1. Ketajaman Observasi &amp; Data</td>
+                  <td class="p-3.5 font-extrabold text-emerald-700">30%</td>
+                  <td class="p-3.5 text-slate-600">Kelengkapan fakta positif, akurasi skor 3 pilar, dan kesesuaian bukti responden instansi.</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="p-3.5 font-bold text-slate-900">2. Kualitas Rekomendasi Solusi</td>
+                  <td class="p-3.5 font-extrabold text-emerald-700">25%</td>
+                  <td class="p-3.5 text-slate-600">Ketepatan 3 solusi siswa menjawab permasalahan kertas, energi, dan sampah secara aplikatif.</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="p-3.5 font-bold text-slate-900">3. Desain &amp; Pesan Poster Kampanye</td>
+                  <td class="p-3.5 font-extrabold text-emerald-700">25%</td>
+                  <td class="p-3.5 text-slate-600">Kreativitas visual poster, kekuatan slogan/tagline, dan kejelasan ajakan peduli iklim.</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="p-3.5 font-bold text-slate-900">4. Kerapian Laporan &amp; Etika Komunikasi</td>
+                  <td class="p-3.5 font-extrabold text-emerald-700">20%</td>
+                  <td class="p-3.5 text-slate-600">Sistematika bahasa Indonesia yang baik serta apresiasi positif dari responden instansi.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================== -->
+    <!-- TAB 4: PANEL EVALUASI GURU                            -->
+    <!-- ===================================================== -->
+    <section id="tab-evaluasi" class="hidden space-y-6">
+      <!-- Layar Kunci PIN Guru -->
+      <div id="pinGate" class="max-w-md mx-auto bg-white rounded-2xl p-6 sm:p-8 shadow-md border border-slate-200 text-center space-y-4">
+        <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl mx-auto">
+          <i class="fa-solid fa-user-shield"></i>
+        </div>
+        <div>
+          <h2 class="text-lg font-extrabold text-slate-900">Akses Panel Evaluasi Guru</h2>
+          <p class="text-xs text-slate-500 mt-1">Masukkan Password / PIN Pengajar untuk membuka kalkulator nilai &amp; pengaturan akses.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="password" id="pinInput" onkeydown="if(event.key==='Enter') checkPin()" placeholder="Masukkan Password Guru" class="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 text-center font-bold tracking-widest text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+          <button onclick="checkPin()" class="px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs sm:text-sm transition">
+            Buka
+          </button>
+        </div>
+        <p id="pinError" class="text-xs text-red-600 font-bold hidden">Password Guru yang dimasukkan salah!</p>
+      </div>
+
+      <!-- Konten Evaluasi Guru (Terbuka Setelah PIN Benar) -->
+      <div id="evaluasiContent" class="hidden space-y-6">
+        <div class="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-slate-200/80 space-y-5">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-700">Panel Penilaian Guru • Sukmawati</span>
+              <h3 class="text-lg sm:text-xl font-extrabold text-slate-900">Kalkulator Nilai Proyek Kelompok &amp; Umpan Balik</h3>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs">
+                <i class="fa-solid fa-unlock mr-1"></i> Mode Guru Aktif
+              </span>
+              <button type="button" onclick="logoutTeacherGate()" class="px-3 py-1 rounded-full bg-slate-100 hover:bg-red-50 text-slate-700 hover:text-red-700 font-bold text-xs transition">
+                <i class="fa-solid fa-lock mr-1"></i> Keluar
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-7 space-y-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Karya Kelompok Siswa untuk Dinilai</label>
+                <select id="evalSelectKarya" onchange="loadEvalItem()" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-600"></select>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                  <div class="flex justify-between text-xs font-bold mb-1">
+                    <span>1. Observasi &amp; Data (30%)</span>
+                    <span id="lblEval1" class="text-emerald-700">85</span>
+                  </div>
+                  <input type="range" id="eval1" min="50" max="100" value="85" oninput="calcTeacherGrade()" />
+                </div>
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                  <div class="flex justify-between text-xs font-bold mb-1">
+                    <span>2. Ketepatan Solusi (25%)</span>
+                    <span id="lblEval2" class="text-emerald-700">85</span>
+                  </div>
+                  <input type="range" id="eval2" min="50" max="100" value="85" oninput="calcTeacherGrade()" />
+                </div>
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                  <div class="flex justify-between text-xs font-bold mb-1">
+                    <span>3. Poster Kampanye (25%)</span>
+                    <span id="lblEval3" class="text-emerald-700">88</span>
+                  </div>
+                  <input type="range" id="eval3" min="50" max="100" value="88" oninput="calcTeacherGrade()" />
+                </div>
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                  <div class="flex justify-between text-xs font-bold mb-1">
+                    <span>4. Laporan &amp; Etika (20%)</span>
+                    <span id="lblEval4" class="text-emerald-700">90</span>
+                  </div>
+                  <input type="range" id="eval4" min="50" max="100" value="90" oninput="calcTeacherGrade()" />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Catatan Apresiasi &amp; Umpan Balik Guru</label>
+                <textarea id="evalCatatan" rows="2" placeholder="Berikan apresiasi dan saran perbaikan untuk kelompok ini..." class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"></textarea>
+              </div>
+
+              <button onclick="saveTeacherEvaluation()" class="px-5 py-3 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold text-xs sm:text-sm shadow transition flex items-center gap-2">
+                <i class="fa-solid fa-floppy-disk"></i>
+                <span>Simpan Nilai Kelompok</span>
+              </button>
+            </div>
+
+            <div class="lg:col-span-5 flex flex-col justify-between p-5 rounded-2xl bg-gradient-to-br from-emerald-950 to-teal-900 text-white">
+              <div class="space-y-2">
+                <span class="text-[11px] uppercase tracking-wider text-amber-300 font-bold">Hasil Kalkulasi Nilai Akhir</span>
+                <div class="flex items-baseline gap-3">
+                  <span id="finalGradeNumber" class="text-5xl font-extrabold text-white">86.8</span>
+                  <span id="finalGradeLetter" class="px-3 py-1 rounded-lg bg-amber-400 text-slate-950 font-extrabold text-sm">Predikat A (Sangat Baik)</span>
+                </div>
+                <p id="evalRespondenInfo" class="text-xs text-emerald-100/90 pt-2 border-t border-white/15">
+                  Skor Responden Instansi: -
+                </p>
+              </div>
+              <div class="text-[11px] text-emerald-200/80 mt-4">
+                Nilai akhir dihitung otomatis berdasarkan bobot 4 dimensi rubrik MPLB dan ditampilkan pada lencana kartu katalog.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel Manajemen Kredensial / Password Guru & Siswa (Tersimpan di Google Sheet 'Akses') -->
+        <div class="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-amber-200 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-amber-700">
+                <i class="fa-solid fa-key mr-1"></i> Keamanan &amp; Hak Akses (Tersimpan di Sheet "Akses")
+              </span>
+              <h3 class="text-base sm:text-lg font-extrabold text-slate-900">Kelola Password Admin/Guru &amp; Kredensial Siswa</h3>
+            </div>
+            <span class="px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-[11px] font-bold">
+              Sinkron Otomatis ke Google Sheets
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+              <label class="block text-xs font-extrabold text-slate-800">
+                <i class="fa-solid fa-user-shield text-emerald-700 mr-1"></i> Password Admin / Guru
+              </label>
+              <p class="text-[11px] text-slate-500">Digunakan untuk membuka menu <strong>Evaluasi Guru</strong> dan juga dapat membuka menu <strong>Tambahkan Karya</strong>.</p>
+              <div class="relative">
+                <input type="text" id="settingPassGuru" placeholder="Ketik password baru guru..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+              <label class="block text-xs font-extrabold text-slate-800">
+                <i class="fa-solid fa-user-graduate text-amber-600 mr-1"></i> Password Akses Siswa
+              </label>
+              <p class="text-[11px] text-slate-500">Dibagikan kepada kelompok siswa agar dapat mengakses menu <strong>Tambahkan Karya</strong>.</p>
+              <div class="relative">
+                <input type="text" id="settingPassSiswa" placeholder="Ketik password baru siswa..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+            <p class="text-[11px] text-slate-500">
+              <i class="fa-solid fa-database text-emerald-700 mr-1"></i> Perubahan password akan langsung memperbarui tab <strong>Sheet "Akses"</strong> di Google Spreadsheet Anda.
+            </p>
+            <button type="button" onclick="saveAccessCredentials()" class="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs sm:text-sm shadow transition flex items-center gap-2">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <span>Simpan Perubahan Password ke Sheet</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Panel Konfigurasi URL Backend Google Apps Script (Memudahkan saat Deploy di Vercel) -->
+        <div class="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-emerald-200 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-700">
+                <i class="fa-solid fa-server mr-1"></i> Koneksi Cloud Vercel &amp; Google Spreadsheet
+              </span>
+              <h3 class="text-base sm:text-lg font-extrabold text-slate-900">URL Web App Google Apps Script (API Database)</h3>
+            </div>
+            <span id="serverConnectionBadge" class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-[11px] font-bold">
+              Memeriksa Koneksi...
+            </span>
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-xs font-bold text-slate-700">Endpoint URL Google Apps Script (`.../exec`)</label>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <input type="url" id="settingScriptUrl" placeholder="https://script.google.com/macros/s/.../exec" class="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-mono text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+              <button type="button" onclick="saveCustomScriptUrl()" class="px-4 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs shrink-0 transition">
+                <i class="fa-solid fa-plug-circle-check mr-1"></i> Simpan &amp; Tes Koneksi
+              </button>
+            </div>
+            <p class="text-[11px] text-slate-500">
+              Tips Vercel: Agar semua perangkat siswa/responden otomatis terhubung tanpa menyetel ulang, tempelkan URL Web App Anda langsung pada variabel <code>DEFAULT_SCRIPT_URL</code> di dalam file <code>index.html</code> sebelum di-deploy ke Vercel.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================================================== -->
+  <!-- SCRIPT UTAMA APLIKASI (OPTIMASI DEPLOY VERCEL + GAS)   -->
+  <!-- ===================================================== -->
+  <script>
+    // ==========================================================
+    // ⚠️ PENTING UNTUK DEPLOY VERCEL:
+    // Ganti tulisan 'URL_WEB_APP_APPS_SCRIPT_ANDA' di bawah ini
+    // dengan URL Web App Google Apps Script Anda (berakhiran /exec)
+    // ==========================================================
+    const DEFAULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzE9ad5aMPswaIjkBS_s45R-24IAoyAsto5hdi0SQhHQj_9hTQ94OIfAidHljvMtIXoQg/exec';
+
+    // Mendapatkan URL aktif (bisa dari kode utama atau dari pengaturan lokal browser)
+    function getActiveScriptUrl() {
+      try {
+        const customUrl = localStorage.getItem('ecoLontara_custom_script_url');
+        if (customUrl && customUrl.startsWith('https://script.google.com/')) {
+          return customUrl.trim();
+        }
+      } catch (e) {}
+      return DEFAULT_SCRIPT_URL.trim();
+    }
+
+    function isBackendConfigured() {
+      const url = getActiveScriptUrl();
+      return url && url !== 'URL_WEB_APP_APPS_SCRIPT_ANDA' && url.startsWith('https://script.google.com/');
+    }
+
+    function updateServerBadge(connected) {
+      const badge = document.getElementById('serverConnectionBadge');
+      const input = document.getElementById('settingScriptUrl');
+      if (input) {
+        input.value = isBackendConfigured() ? getActiveScriptUrl() : '';
+      }
+      if (!badge) return;
+      if (connected) {
+        badge.className = 'px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-900 border border-emerald-300 text-[11px] font-extrabold';
+        badge.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> Terhubung ke Google Sheets';
+      } else {
+        badge.className = 'px-2.5 py-1 rounded-lg bg-amber-100 text-amber-900 border border-amber-300 text-[11px] font-extrabold';
+        badge.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-amber-600 mr-1"></i> Mode Penyimpanan Lokal (Offline)';
+      }
+    }
+
+    async function saveCustomScriptUrl() {
+      const val = document.getElementById('settingScriptUrl').value.trim();
+      if (!val || !val.startsWith('https://script.google.com/')) {
+        showToast('Masukkan URL Google Apps Script yang valid (diawali https://script.google.com/...)');
+        return;
+      }
+      try {
+        localStorage.setItem('ecoLontara_custom_script_url', val);
+      } catch (e) {}
+      await loadInitialData();
+    }
+    
+    // ==========================================================
+
+    // Daftar Instansi di Kota Parepare
+    const masterInstansiList = [
+      "Dinas Lingkungan Hidup Kota Parepare",
+      "Dinas Pendidikan dan Kebudayaan Kota Parepare",
+      "Kantor Sekretariat Daerah (Setdako) Parepare",
+      "PT Bank Sulselbar Cabang Parepare",
+      "PT PLN (Persero) ULP Parepare",
+      "BPJS Kesehatan Cabang Parepare",
+      "Kantor Pelayanan Pajak (KPP) Pratama Parepare",
+      "PDAM Tirta Karajae Kota Parepare",
+      "RSUD Andi Makkasau Kota Parepare",
+      "Tata Usaha SMKN 1 Parepare"
+    ];
+
+    // 15 Butir Pertanyaan Kuesioner Responden (5 per Pilar, Skala 1-4)
+    const questionnaireQuestions = [
+      // Pilar 1: Hemat Kertas
+      { id: 'q1', pilar: 1, label: 'Pilar 1 • Hemat Kertas', text: 'Instansi telah menggunakan persuratan elektronik (E-Office / Srikandi / grup digital) untuk mengurangi cetak surat fisik.' },
+      { id: 'q2', pilar: 1, label: 'Pilar 1 • Hemat Kertas', text: 'Pegawai memanfaatkan kertas bekas satu sisi (reuse) untuk mencetak draf konsep atau catatan internal.' },
+      { id: 'q3', pilar: 1, label: 'Pilar 1 • Hemat Kertas', text: 'Pencetakan dokumen laporan diutamakan menggunakan format bolak-balik (duplex printing).' },
+      { id: 'q4', pilar: 1, label: 'Pilar 1 • Hemat Kertas', text: 'Pengarsipan dokumen kantor sudah mulai dialihkan ke penyimpanan awan / folder digital.' },
+      { id: 'q5', pilar: 1, label: 'Pilar 1 • Hemat Kertas', text: 'Terdapat imbauan atau pengawasan penghematan pemakaian kertas HVS di ruang kerja.' },
+      // Pilar 2: Listrik & Air
+      { id: 'q6', pilar: 2, label: 'Pilar 2 • Listrik & Air', text: 'Suhu pendingin ruangan (AC) diatur stabil pada rentang hemat energi 24°C–26°C.' },
+      { id: 'q7', pilar: 2, label: 'Pilar 2 • Listrik & Air', text: 'Lampu, layar komputer, dan AC selalu dimatikan saat ruangan kosong atau jam pulang kerja.' },
+      { id: 'q8', pilar: 2, label: 'Pilar 2 • Listrik & Air', text: 'Ruang kerja memaksimalkan bukaan jendela dan pencahayaan alami matahari di siang hari.' },
+      { id: 'q9', pilar: 2, label: 'Pilar 2 • Listrik & Air', text: 'Instansi telah menggunakan lampu LED hemat energi di sebagian besar ruangan kantor.' },
+      { id: 'q10', pilar: 2, label: 'Pilar 2 • Listrik & Air', text: 'Keran air di toilet/pantry berfungsi baik tanpa kebocoran dan terdapat stiker hemat air.' },
+      // Pilar 3: Hijau & Sampah
+      { id: 'q11', pilar: 3, label: 'Pilar 3 • Hijau & Sampah', text: 'Tersedia tempat sampah terpilah (minimal Organik dan Anorganik) di area strategis kantor.' },
+      { id: 'q12', pilar: 3, label: 'Pilar 3 • Hijau & Sampah', text: 'Terdapat tanaman hias hidup di dalam ruangan (indoor plant) maupun taman halaman kantor.' },
+      { id: 'q13', pilar: 3, label: 'Pilar 3 • Hijau & Sampah', text: 'Pegawai terbiasa membawa botol minum (tumbler) untuk mengurangi sampah gelas/botol plastik.' },
+      { id: 'q14', pilar: 3, label: 'Pilar 3 • Hijau & Sampah', text: 'Area meja kerja menerapkan budaya 5R (Ringkas, Rapi, Resik, Rawat, Rajin) setiap hari.' },
+      { id: 'q15', pilar: 3, label: 'Pilar 3 • Hijau & Sampah', text: 'Instansi rutin melaksanakan kerja bakti kebersihan atau gerakan jumat bersih.' }
+    ];
+
+    // Contoh Awal Data Katalog
+    const defaultCatalogItems = [
+      {
+        id: 'eco-1',
+        kelompok: 'Kelompok 1 (Andi Nurul, Siti Aisyah, M. Rizky)',
+        kelas: 'X MPLB',
+        instansi: 'Dinas Lingkungan Hidup Kota Parepare',
+        kategori: 'Instansi Pemerintah',
+        pilar1: 18,
+        pilar2: 16,
+        pilar3: 19,
+        totalSkor: 53,
+        predikat: 'Gold',
+        faktaPositif: 'Seluruh surat menyurat telah menggunakan aplikasi Srikandi (paperless), halaman kantor rimbun dengan bank sampah terpilah, dan pegawai wajib menggunakan tumbler.',
+        permasalahan: 'Beberapa lampu lorong masih menyala pada siang hari saat cuaca cerah.',
+        solusi1: 'Menetapkan kuota maksimal kertas cetak per bidang setiap bulan.',
+        solusi2: 'Menempelkan stiker pengingat sakelar lampu dan jadwal piket matikan AC.',
+        solusi3: 'Menambah tanaman lidah mertua (sansevieria) di ruang pelayanan tamu.',
+        judulPoster: 'Lontara Hijau: Kantor Tanpa Sampah Plastik',
+        tagline: 'Satu Tumbler Sejuta Perubahan untuk Parepare Bersih',
+        posterUrl: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80',
+        pdfLink: '',
+        namaResponden: 'Ir. H. Syamsuddin, M.Si. (Sekretaris DLH)',
+        skorResponden: 92,
+        testimoniResponden: 'Audit siswa SMKN 1 Parepare sangat objektif dan poster kampanyenya langsung kami pasang di lobi pelayanan.',
+        nilaiGuru: 91.5,
+        catatanGuru: 'Observasi sangat tajam dan solusi langsung diterapkan oleh instansi.'
+      },
+      {
+        id: 'eco-2',
+        kelompok: 'Kelompok 2 (Fadel Muhammad, Nur Hikmah, Putri Ayu)',
+        kelas: 'X MPLB',
+        instansi: 'PT Bank Sulselbar Cabang Parepare',
+        kategori: 'BUMN / Perbankan',
+        pilar1: 17,
+        pilar2: 18,
+        pilar3: 15,
+        totalSkor: 50,
+        predikat: 'Gold',
+        faktaPositif: 'Transaksi nasabah didorong menggunakan mobile banking dan slip digital, suhu AC ruangan terkontrol otomatis 24°C, serta pencahayaan lobi menggunakan kaca besar alami.',
+        permasalahan: 'Masih ditemukan tumpukan struk kertas ATM di tempat sampah umum yang belum dipilah khusus.',
+        solusi1: 'Menyediakan kotak khusus daur ulang kertas struk di samping mesin ATM.',
+        solusi2: 'Mengaktifkan fitur sleep otomatis 5 menit pada seluruh komputer teller.',
+        solusi3: 'Menempatkan pot tanaman penyerap polutan di meja customer service.',
+        judulPoster: 'Perbankan Hijau: Transaksi Cerdas Tanpa Kertas',
+        tagline: 'Hemat Kertas Hari Ini, Selamatkan Hutan Sulawesi Esok Hari',
+        posterUrl: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=800&q=80',
+        pdfLink: '',
+        namaResponden: 'Andi Tenri Rawe, S.E. (Penyelia Operasional)',
+        skorResponden: 89,
+        testimoniResponden: 'Rekomendasi kotak daur ulang struk ATM dari siswa sangat inovatif dan relevan dengan program Green Banking kami.',
+        nilaiGuru: 89.0,
+        catatanGuru: 'Poster sangat komunikatif dan data observasi lengkap.'
+      }
+    ];
+
+    let catalogItems = [];
+    let pendingResponses = [];
+    let activeFilter = 'ALL';
+    let currentPosterDataUrl = '';
+    let currentQPosterDataUrl = '';
+
+    // State Kredensial Akses (Default: Guru = 12345, Siswa = mplb123)
+    let accessCredentials = {
+      guru: '12345',
+      siswa: 'mplb123'
+    };
+    let isStudentUnlocked = false;
+    let isTeacherUnlocked = false;
+
+    // Tampilkan Indikator Loading
+    function showLoading() {
+      showToast('Sedang memuat data dari server...');
+    }
+
+    // Ambil Data dari Backend (Google Sheets)
+    async function loadInitialData() {
+      loadSavedAppLogo();
+      loadSavedGuruPhoto();
+
+      // Muat kredensial dari penyimpanan lokal terlebih dahulu sebagai cadangan
+      try {
+        const savedCreds = localStorage.getItem('ecoLontara_akses_v1');
+        if (savedCreds) {
+          const parsed = JSON.parse(savedCreds);
+          if (parsed.guru) accessCredentials.guru = String(parsed.guru);
+          if (parsed.siswa) accessCredentials.siswa = String(parsed.siswa);
+        }
+      } catch (e) {}
+
+      // Jika URL belum disetel, gunakan LocalStorage (Fallback untuk uji coba di Vercel)
+      if (!isBackendConfigured()) {
+        updateServerBadge(false);
+        try {
+          const savedCatalog = localStorage.getItem('ecoLontara_catalog_v2');
+          catalogItems = savedCatalog ? JSON.parse(savedCatalog) : [...defaultCatalogItems];
+          const savedPending = localStorage.getItem('ecoLontara_pending_v2');
+          pendingResponses = savedPending ? JSON.parse(savedPending) : [];
+        } catch (e) {
+          catalogItems = [...defaultCatalogItems];
+          pendingResponses = [];
+        }
+        syncCredentialInputs();
+        renderCatalog();
+        return;
+      }
+
+      showLoading();
+      try {
+        const response = await fetch(getActiveScriptUrl() + '?action=getAll', {
+          method: 'GET',
+          redirect: 'follow'
+        });
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+          updateServerBadge(true);
+          catalogItems = data.katalog.length > 0 ? data.katalog : [...defaultCatalogItems];
+          pendingResponses = data.responden || [];
+          if (data.akses) {
+            if (data.akses.guru) accessCredentials.guru = String(data.akses.guru);
+            if (data.akses.siswa) accessCredentials.siswa = String(data.akses.siswa);
+            try { localStorage.setItem('ecoLontara_akses_v1', JSON.stringify(accessCredentials)); } catch (e) {}
+          }
+          syncCredentialInputs();
+          renderCatalog();
+          renderPendingQuestionnaires();
+          showToast('Data berhasil disinkronkan dari Google Sheets!');
+        } else {
+          updateServerBadge(false);
+          showToast('Gagal membaca data dari server.');
+        }
+      } catch (error) {
+        updateServerBadge(false);
+        showToast('Mode Lokal Aktif: Pastikan URL Google Apps Script sudah benar.');
+        catalogItems = [...defaultCatalogItems];
+        syncCredentialInputs();
+        renderCatalog();
+      }
+    }
+
+    // Kirim Data ke Backend (Simpan Karya)
+    async function saveCatalogData(newItem = null, actionType = 'addKarya') {
+      try { localStorage.setItem('ecoLontara_catalog_v2', JSON.stringify(catalogItems)); } catch (e) {}
+      if (!isBackendConfigured()) return;
+
+      if(!newItem) return;
+      showToast('Menyimpan ke Google Sheets...');
+
+      try {
+        await fetch(getActiveScriptUrl(), {
+          method: 'POST',
+          redirect: 'follow',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // Kompatibel penuh dengan CORS Vercel -> GAS
+          body: JSON.stringify({ action: actionType, data: newItem })
+        });
+        showToast('Data berhasil tersimpan di Google Sheets!');
+      } catch (e) {
+        showToast('Gagal terhubung ke server saat menyimpan.');
+      }
+    }
+
+    // Hapus Karya dari Server
+    async function deleteCatalogDataOnServer(id) {
+       if (isBackendConfigured()) {
+          try {
+            await fetch(getActiveScriptUrl(), {
+              method: 'POST',
+              redirect: 'follow',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify({ action: 'deleteKarya', data: { id: id } })
+            });
+          } catch(e) {}
+       }
+    }
+
+    // Kirim Antrean Responden ke Server
+    async function savePendingData(newResp = null) {
+      try { localStorage.setItem('ecoLontara_pending_v2', JSON.stringify(pendingResponses)); } catch (e) {}
+      if (!isBackendConfigured()) return;
+
+      if(!newResp) return;
+      showToast('Mengirim hasil kuesioner ke Google Sheets...');
+      
+      try {
+        await fetch(getActiveScriptUrl(), {
+          method: 'POST',
+          redirect: 'follow',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'addResponden', data: newResp })
+        });
+      } catch (e) {
+        showToast('Gagal mengirim kuesioner ke server.');
+      }
+    }
+
+    // Hapus Antrean Responden di Server
+    async function deletePendingDataOnServer(id) {
+       if (isBackendConfigured()) {
+          try {
+            await fetch(getActiveScriptUrl(), {
+              method: 'POST',
+              redirect: 'follow',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify({ action: 'deleteResponden', data: { id: id } })
+            });
+          } catch(e) {}
+       }
+    }
+
+    // Logo & Foto Guru Custom
+    function loadSavedAppLogo() {
+      try {
+        const savedLogo = localStorage.getItem('ecoLontara_customLogo');
+        if (savedLogo) {
+          const img = document.getElementById('customLogoImg');
+          const svg = document.getElementById('defaultLogoSvg');
+          img.src = savedLogo;
+          img.classList.remove('hidden');
+          svg.classList.add('hidden');
+        }
+      } catch (e) {}
+    }
+
+    function handleLogoUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        document.getElementById('customLogoImg').src = dataUrl;
+        document.getElementById('customLogoImg').classList.remove('hidden');
+        document.getElementById('defaultLogoSvg').classList.add('hidden');
+        try { localStorage.setItem('ecoLontara_customLogo', dataUrl); } catch (err) {}
+        showToast('Logo berhasil diperbarui!');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function loadSavedGuruPhoto() {
+      try {
+        const savedPhoto = localStorage.getItem('ecoLontara_guruPhoto');
+        if (savedPhoto) {
+          const img = document.getElementById('guruPhotoImg');
+          const icon = document.getElementById('guruPhotoDefaultIcon');
+          img.src = savedPhoto;
+          img.classList.remove('hidden');
+          icon.classList.add('hidden');
+        }
+      } catch (e) {}
+    }
+
+    function handleGuruPhotoUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        document.getElementById('guruPhotoImg').src = dataUrl;
+        document.getElementById('guruPhotoImg').classList.remove('hidden');
+        document.getElementById('guruPhotoDefaultIcon').classList.add('hidden');
+        try { localStorage.setItem('ecoLontara_guruPhoto', dataUrl); } catch (err) {}
+        showToast('Foto profil berhasil diperbarui!');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Navigasi Tab
+    function switchTab(tabName) {
+      ['katalog', 'generator', 'panduan', 'evaluasi'].forEach(t => {
+        document.getElementById(`tab-${t}`).classList.add('hidden');
+        const btn = document.getElementById(`tabBtn-${t}`);
+        btn.classList.remove('bg-emerald-800', 'text-white', 'shadow-sm');
+        btn.classList.add('bg-slate-100', 'text-slate-700');
+      });
+
+      document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+      const activeBtn = document.getElementById(`tabBtn-${tabName}`);
+      activeBtn.classList.remove('bg-slate-100', 'text-slate-700');
+      activeBtn.classList.add('bg-emerald-800', 'text-white', 'shadow-sm');
+
+      if (tabName === 'generator') {
+        populateInstansiDropdowns();
+        renderPendingQuestionnaires();
+      } else if (tabName === 'evaluasi') {
+        populateTeacherEvalDropdown();
+      }
+    }
+
+    // Hitung Predikat
+    function getPredikat(total) {
+      if (total >= 46) return 'Gold';
+      if (total >= 31) return 'Silver';
+      return 'Bronze';
+    }
+
+    function getPredikatBadgeClass(predikat) {
+      if (predikat === 'Gold') return 'bg-amber-400 text-slate-950 border border-amber-300';
+      if (predikat === 'Silver') return 'bg-slate-200 text-slate-900 border border-slate-300';
+      return 'bg-orange-200 text-orange-950 border border-orange-300';
+    }
+
+    // Render Statistik Header
+    function updateHeaderStats() {
+      const total = catalogItems.length;
+      const sumSkor = catalogItems.reduce((acc, item) => acc + Number(item.totalSkor || 0), 0);
+      const avg = total > 0 ? (sumSkor / total).toFixed(1) : 0;
+      const gold = catalogItems.filter(i => i.predikat === 'Gold').length;
+      const respCount = catalogItems.filter(i => i.namaResponden && i.namaResponden.trim() !== '').length + pendingResponses.length;
+
+      document.getElementById('statTotalInstansi').textContent = `${total} Kantor`;
+      document.getElementById('statAvgSkor').textContent = `${avg} / 60`;
+      document.getElementById('statGoldCount').textContent = `${gold} Instansi`;
+      document.getElementById('statRespondenCount').textContent = `${respCount} Respon`;
+    }
+
+    // Filter Kategori
+    function setFilter(kat) {
+      activeFilter = kat;
+      document.querySelectorAll('.filter-pill').forEach(btn => {
+        btn.classList.remove('bg-emerald-800', 'text-white');
+        btn.classList.add('bg-slate-100', 'text-slate-700');
+      });
+      const activeBtn = document.getElementById(`filter-${kat}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-slate-100', 'text-slate-700');
+        activeBtn.classList.add('bg-emerald-800', 'text-white');
+      }
+      renderCatalog();
+    }
+
+    // Render Rak Katalog Digital
+    function renderCatalog() {
+      updateHeaderStats();
+      const grid = document.getElementById('catalogGrid');
+      const query = (document.getElementById('searchInput')?.value || '').toLowerCase();
+
+      const filtered = catalogItems.filter(item => {
+        const matchKat = activeFilter === 'ALL' || item.kategori === activeFilter;
+        const matchSearch =
+          item.instansi.toLowerCase().includes(query) ||
+          item.kelompok.toLowerCase().includes(query) ||
+          item.judulPoster.toLowerCase().includes(query) ||
+          item.tagline.toLowerCase().includes(query);
+        return matchKat && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full bg-white rounded-3xl p-10 text-center border border-slate-200 space-y-3">
+            <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-2xl mx-auto">
+              <i class="fa-solid fa-folder-open"></i>
+            </div>
+            <h3 class="text-base font-extrabold text-slate-800">Belum Ada Karya pada Kategori Ini</h3>
+            <p class="text-xs text-slate-500 max-w-md mx-auto">Silakan tambahkan karya audit baru melalui menu Tambahkan Karya atau isi Kuesioner Responden Instansi.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(item => {
+        const badgeCls = getPredikatBadgeClass(item.predikat);
+        const hasResp = item.skorResponden && Number(item.skorResponden) > 0;
+        const hasGrade = item.nilaiGuru && Number(item.nilaiGuru) > 0;
+
+        return `
+          <article class="book-card book-spine bg-white rounded-2xl shadow-md border border-slate-200/90 overflow-hidden flex flex-col justify-between pl-2.5">
+            <div>
+              <!-- Gambar Sampul Poster -->
+              <div class="relative h-48 bg-slate-900 overflow-hidden">
+                <img src="${item.posterUrl}" alt="${item.judulPoster}" onerror="this.src='https://placehold.co/600x400/064e3b/ffffff?text=ECO-LONTARA'" class="w-full h-full object-cover opacity-90 hover:scale-105 transition duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent"></div>
+
+                <!-- Badge Kategori & Predikat -->
+                <div class="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-1 rounded-lg bg-slate-950/75 backdrop-blur-md text-white text-[10px] font-bold">
+                    ${item.kategori}
+                  </span>
+                  <span class="px-2.5 py-1 rounded-lg text-[11px] font-extrabold shadow ${badgeCls}">
+                    <i class="fa-solid fa-award mr-1"></i>${item.predikat} (${item.totalSkor}/60)
+                  </span>
+                </div>
+
+                <!-- Judul Instansi di Bawah Sampul -->
+                <div class="absolute bottom-3 left-3 right-3 text-white">
+                  <div class="text-[11px] text-amber-300 font-bold truncate">${item.kelompok} • ${item.kelas}</div>
+                  <h3 class="text-base font-extrabold leading-snug line-clamp-1">${item.instansi}</h3>
+                </div>
+              </div>
+
+              <!-- Isi Ringkas Kartu -->
+              <div class="p-4 space-y-3">
+                <div>
+                  <div class="text-xs font-extrabold text-emerald-900 line-clamp-1">${item.judulPoster}</div>
+                  <p class="text-[11px] italic text-slate-500 line-clamp-1">"${item.tagline}"</p>
+                </div>
+
+                <!-- Bar Skor 3 Pilar -->
+                <div class="grid grid-cols-3 gap-1.5 text-center bg-slate-50 p-2 rounded-xl border border-slate-100">
+                  <div>
+                    <span class="text-[9px] uppercase font-bold text-slate-500 block">Kertas</span>
+                    <span class="text-xs font-extrabold text-emerald-800">${item.pilar1}/20</span>
+                  </div>
+                  <div class="border-x border-slate-200">
+                    <span class="text-[9px] uppercase font-bold text-slate-500 block">Energi</span>
+                    <span class="text-xs font-extrabold text-amber-700">${item.pilar2}/20</span>
+                  </div>
+                  <div>
+                    <span class="text-[9px] uppercase font-bold text-slate-500 block">Sampah</span>
+                    <span class="text-xs font-extrabold text-teal-800">${item.pilar3}/20</span>
+                  </div>
+                </div>
+
+                <!-- Fakta Singkat -->
+                <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                  ${item.faktaPositif}
+                </p>
+
+                <!-- Box Penilaian Hasil Observasi Responden Instansi -->
+                ${hasResp ? `
+                  <div class="p-2.5 rounded-xl bg-amber-50/90 border border-amber-200/90 text-[11px] space-y-1">
+                    <div class="flex items-center justify-between">
+                      <span class="font-extrabold text-amber-950 flex items-center gap-1">
+                        <i class="fa-solid fa-building-circle-check text-emerald-700"></i> Evaluasi Responden
+                      </span>
+                      <span class="px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-extrabold text-[10px]">
+                        Skor: ${item.skorResponden}/100
+                      </span>
+                    </div>
+                    <div class="font-bold text-slate-800 truncate">${item.namaResponden}</div>
+                    <p class="italic text-slate-600 line-clamp-2">"${item.testimoniResponden}"</p>
+                  </div>
+                ` : ''}
+
+                <!-- Badge Nilai Guru jika sudah dinilai -->
+                ${hasGrade ? `
+                  <div class="flex items-center justify-between px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs">
+                    <span class="font-bold text-emerald-950"><i class="fa-solid fa-star text-amber-500 mr-1"></i>Nilai Evaluasi Guru:</span>
+                    <span class="font-extrabold text-emerald-800">${item.nilaiGuru}</span>
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+
+            <!-- Tombol Aksi Bawah Kartu -->
+            <div class="px-4 pb-4 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+              <button onclick="openReport('${item.id}')" class="flex-1 py-2 px-3 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs transition flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Laporan</span>
+              </button>
+              <button onclick="openPoster('${item.id}')" class="flex-1 py-2 px-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs transition flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-qrcode"></i>
+                <span>Poster &amp; QR</span>
+              </button>
+              <button onclick="deleteKarya('${item.id}')" title="Hapus Karya" class="w-9 h-9 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center transition">
+                <i class="fa-solid fa-trash-can text-xs"></i>
+              </button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // Kunci Instansi yang Sudah Dipilih Kelompok Lain
+    function getTakenInstansiSet() {
+      return new Set(catalogItems.map(i => i.instansi.trim().toLowerCase()));
+    }
+
+    function populateInstansiDropdowns() {
+      const taken = getTakenInstansiSet();
+      const selectForm = document.getElementById('f_instansiSelect');
+      const selectModal = document.getElementById('q_instansiSelect');
+
+      const buildOptions = () => {
+        let html = `<option value="">-- Pilih Instansi di Kota Parepare --</option>`;
+        masterInstansiList.forEach(inst => {
+          const isTaken = taken.has(inst.toLowerCase());
+          html += `<option value="${inst}" ${isTaken ? 'disabled' : ''}>${inst} ${isTaken ? '🔒 (Sudah Dipilih Kelompok Lain)' : ''}</option>`;
+        });
+        html += `<option value="LAINNYA">+ Lainnya (Ketik Manual Nama Instansi)</option>`;
+        return html;
+      };
+
+      if (selectForm) selectForm.innerHTML = buildOptions();
+      if (selectModal) selectModal.innerHTML = buildOptions();
+    }
+
+    function handleInstansiSelectChange() {
+      const val = document.getElementById('f_instansiSelect').value;
+      const manualInput = document.getElementById('f_instansiManual');
+      if (val === 'LAINNYA') {
+        manualInput.classList.remove('hidden');
+        manualInput.required = true;
+        manualInput.focus();
+      } else {
+        manualInput.classList.add('hidden');
+        manualInput.required = false;
+      }
+    }
+
+    function handleQInstansiChange() {
+      const val = document.getElementById('q_instansiSelect').value;
+      const manualInput = document.getElementById('q_instansiManual');
+      if (val === 'LAINNYA') {
+        manualInput.classList.remove('hidden');
+        manualInput.required = true;
+        manualInput.focus();
+      } else {
+        manualInput.classList.add('hidden');
+        manualInput.required = false;
+      }
+    }
+
+    // Update Live Skor di Form Siswa
+    function updateLiveScore() {
+      const p1 = Number(document.getElementById('f_pilar1').value);
+      const p2 = Number(document.getElementById('f_pilar2').value);
+      const p3 = Number(document.getElementById('f_pilar3').value);
+      const total = p1 + p2 + p3;
+      const pred = getPredikat(total);
+
+      document.getElementById('valP1').textContent = p1;
+      document.getElementById('valP2').textContent = p2;
+      document.getElementById('valP3').textContent = p3;
+      document.getElementById('liveTotalSkor').textContent = total;
+
+      const badge = document.getElementById('livePredikatBadge');
+      badge.textContent = pred;
+      badge.className = `px-2.5 py-1 rounded-lg text-xs font-extrabold ${getPredikatBadgeClass(pred)}`;
+    }
+
+    // Upload File Poster di Form Siswa
+    function handlePosterFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        currentPosterDataUrl = e.target.result;
+        const img = document.getElementById('posterPreviewImg');
+        img.src = currentPosterDataUrl;
+        img.classList.remove('hidden');
+        document.getElementById('posterPlaceholder').classList.add('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Upload File Poster di Modal Kuesioner Responden
+    function handleQPosterFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        currentQPosterDataUrl = e.target.result;
+        const img = document.getElementById('q_posterPreview');
+        img.src = currentQPosterDataUrl;
+        img.classList.remove('hidden');
+        document.getElementById('q_posterPlaceholder').classList.add('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Render 15 Pertanyaan di Modal Kuesioner Responden
+    function renderQuestionnaireQuestions() {
+      const container = document.getElementById('questionnaireQuestionsContainer');
+      container.innerHTML = questionnaireQuestions.map((q, idx) => `
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="space-y-0.5">
+            <span class="text-[10px] font-extrabold uppercase text-emerald-800">${q.label}</span>
+            <p class="text-xs font-semibold text-slate-800">${idx + 1}. ${q.text}</p>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            ${[1, 2, 3, 4].map(score => `
+              <label class="cursor-pointer">
+                <input type="radio" name="${q.id}" value="${score}" ${score === 3 ? 'checked' : ''} onchange="updateQuestionnaireLiveScore()" class="peer hidden" />
+                <span class="w-8 h-8 rounded-xl border border-slate-300 bg-white peer-checked:bg-emerald-800 peer-checked:text-white peer-checked:border-emerald-800 flex items-center justify-center text-xs font-extrabold transition">
+                  ${score}
+                </span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+      updateQuestionnaireLiveScore();
+    }
+
+    function updateQuestionnaireLiveScore() {
+      let p1 = 0, p2 = 0, p3 = 0;
+      questionnaireQuestions.forEach(q => {
+        const checked = document.querySelector(`input[name="${q.id}"]:checked`);
+        const val = checked ? Number(checked.value) : 3;
+        if (q.pilar === 1) p1 += val;
+        if (q.pilar === 2) p2 += val;
+        if (q.pilar === 3) p3 += val;
+      });
+      const total = p1 + p2 + p3;
+      const index100 = Math.round((total / 60) * 100);
+      document.getElementById('q_liveTotal').textContent = total;
+      document.getElementById('q_liveIndex').textContent = index100;
+      return { p1, p2, p3, total, index100 };
+    }
+
+    function openQuestionnaireModal() {
+      populateInstansiDropdowns();
+      renderQuestionnaireQuestions();
+      closeModal('modalQuestionnaire');
+      const modal = document.getElementById('modalQuestionnaire');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    // Submit Kuesioner Responden -> Masuk ke Daftar Antrean di Form Siswa
+    function submitRespondentQuestionnaire(event) {
+      event.preventDefault();
+      const selectVal = document.getElementById('q_instansiSelect').value;
+      const manualVal = document.getElementById('q_instansiManual').value.trim();
+      const instansi = selectVal === 'LAINNYA' ? manualVal : selectVal;
+
+      if (!instansi) {
+        showToast('Silakan pilih atau ketik nama instansi terlebih dahulu!');
+        return;
+      }
+
+      const taken = getTakenInstansiSet();
+      if (taken.has(instansi.toLowerCase())) {
+        showToast('Instansi ini sudah dipilih oleh kelompok lain!');
+        return;
+      }
+
+      const scores = updateQuestionnaireLiveScore();
+      const namaResp = document.getElementById('q_namaResponden').value.trim();
+      const jabResp = document.getElementById('q_jabatanResponden').value.trim();
+      const kategori = document.getElementById('q_kategori').value;
+      const testimoni = document.getElementById('q_testimoni').value.trim();
+
+      const respObj = {
+        id: 'resp-' + Date.now(),
+        instansi,
+        kategori,
+        namaResponden: `${namaResp} (${jabResp})`,
+        pilar1: scores.p1,
+        pilar2: scores.p2,
+        pilar3: scores.p3,
+        totalSkor: scores.total,
+        skorResponden: scores.index100,
+        testimoniResponden: testimoni,
+        posterUrl: currentQPosterDataUrl || ''
+      };
+
+      pendingResponses.unshift(respObj);
+      savePendingData(respObj); // Panggil fungsi API server
+      
+      closeModal('modalQuestionnaire');
+      switchTab('generator');
+      applyPendingResponseToStudentForm(respObj.id);
+      showToast('Hasil kuesioner responden berhasil dikirim!');
+    }
+
+    // Render Daftar Hasil Kuesioner Responden di Bagian Atas Form Siswa
+    function renderPendingQuestionnaires() {
+      const box = document.getElementById('pendingQuestionnaireBox');
+      const list = document.getElementById('pendingQuestionnaireList');
+      const badge = document.getElementById('pendingCountBadge');
+
+      if (pendingResponses.length === 0) {
+        box.classList.add('hidden');
+        return;
+      }
+
+      box.classList.remove('hidden');
+      badge.textContent = `${pendingResponses.length} Data Responden`;
+      list.innerHTML = pendingResponses.map(r => `
+        <div class="p-3.5 rounded-xl bg-amber-50/70 border border-amber-300 flex items-center justify-between gap-3">
+          <div class="min-w-0">
+            <div class="text-xs font-extrabold text-slate-900 truncate">${r.instansi}</div>
+            <div class="text-[11px] text-slate-600 truncate">Responden: ${r.namaResponden} • Skor: <strong>${r.totalSkor}/60</strong> (${r.skorResponden}/100)</div>
+          </div>
+          <button type="button" onclick="applyPendingResponseToStudentForm('${r.id}')" class="shrink-0 px-3 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-[11px]">
+            Gunakan Data
+          </button>
+        </div>
+      `).join('');
+    }
+
+    // Muat Data Kuesioner Responden ke Form Tambahkan Karya Siswa
+    function applyPendingResponseToStudentForm(respId) {
+      const r = pendingResponses.find(x => x.id === respId);
+      if (!r) return;
+
+      populateInstansiDropdowns();
+      const selectEl = document.getElementById('f_instansiSelect');
+      const manualEl = document.getElementById('f_instansiManual');
+
+      const existsInMaster = masterInstansiList.some(m => m.toLowerCase() === r.instansi.toLowerCase());
+      if (existsInMaster) {
+        selectEl.value = r.instansi;
+        manualEl.classList.add('hidden');
+      } else {
+        selectEl.value = 'LAINNYA';
+        manualEl.classList.remove('hidden');
+        manualEl.value = r.instansi;
+      }
+
+      document.getElementById('f_kategori').value = r.kategori;
+      
+      // Bagian Skor Pilar dan Fakta Positif TIDAK lagi diisi otomatis
+      // Siswa harus memilih dan mengisi nilainya sendiri
+      
+      if (r.posterUrl) {
+        currentPosterDataUrl = r.posterUrl;
+        const img = document.getElementById('posterPreviewImg');
+        img.src = r.posterUrl;
+        img.classList.remove('hidden');
+        document.getElementById('posterPlaceholder').classList.add('hidden');
+      }
+
+      document.getElementById('f_namaResponden').value = r.namaResponden;
+      document.getElementById('f_skorResponden').value = r.skorResponden;
+      document.getElementById('f_testimoniResponden').value = r.testimoniResponden;
+      document.getElementById('f_pendingId').value = r.id;
+
+      const alertBox = document.getElementById('linkedRespondenAlert');
+      const alertText = document.getElementById('linkedRespondenText');
+      alertBox.classList.remove('hidden');
+      alertText.textContent = `${r.instansi} — ${r.namaResponden} (Skor Observasi: ${r.totalSkor}/60 | Indeks: ${r.skorResponden}/100)`;
+
+      showToast(`Data responden dimuat! Silakan lengkapi skor pilar & fakta secara manual.`);
+    }
+
+    // Simpan Karya Baru Siswa ke Katalog Digital
+    function handleFormSubmit(event) {
+      event.preventDefault();
+
+      const selectVal = document.getElementById('f_instansiSelect').value;
+      const manualVal = document.getElementById('f_instansiManual').value.trim();
+      const instansi = selectVal === 'LAINNYA' ? manualVal : selectVal;
+
+      if (!instansi) {
+        showToast('Silakan pilih atau ketik nama instansi tujuan!');
+        return;
+      }
+
+      const taken = getTakenInstansiSet();
+      if (taken.has(instansi.toLowerCase())) {
+        showToast('Maaf, instansi ini sudah dipilih oleh kelompok lain. Pilih instansi berbeda!');
+        return;
+      }
+
+      const p1 = Number(document.getElementById('f_pilar1').value);
+      const p2 = Number(document.getElementById('f_pilar2').value);
+      const p3 = Number(document.getElementById('f_pilar3').value);
+      const total = p1 + p2 + p3;
+
+      const newItem = {
+        id: 'eco-' + Date.now(),
+        kelompok: document.getElementById('f_kelompok').value.trim(),
+        kelas: document.getElementById('f_kelas').value.trim(),
+        instansi,
+        kategori: document.getElementById('f_kategori').value,
+        pilar1: p1,
+        pilar2: p2,
+        pilar3: p3,
+        totalSkor: total,
+        predikat: getPredikat(total),
+        faktaPositif: document.getElementById('f_faktaPositif').value.trim(),
+        permasalahan: document.getElementById('f_permasalahan').value.trim(),
+        solusi1: document.getElementById('f_solusi1').value.trim(),
+        solusi2: document.getElementById('f_solusi2').value.trim(),
+        solusi3: document.getElementById('f_solusi3').value.trim(),
+        judulPoster: document.getElementById('f_judulPoster').value.trim(),
+        tagline: document.getElementById('f_tagline').value.trim(),
+        posterUrl: currentPosterDataUrl || 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80',
+        pdfLink: document.getElementById('f_pdfLink').value.trim(),
+        namaResponden: document.getElementById('f_namaResponden').value || 'Responden Instansi Mitra',
+        skorResponden: Number(document.getElementById('f_skorResponden').value) || Math.round((total / 60) * 100),
+        testimoniResponden: document.getElementById('f_testimoniResponden').value || 'Mengapresiasi kegiatan observasi dan kampanye budaya kerja Eco-Green siswa SMKN 1 Parepare.',
+        nilaiGuru: 0,
+        catatanGuru: ''
+      };
+
+      catalogItems.unshift(newItem);
+      saveCatalogData(newItem, 'addKarya'); // Panggil API Server
+
+      // Hapus dari daftar antrean responden jika berasal dari kuesioner
+      const pendingId = document.getElementById('f_pendingId').value;
+      if (pendingId) {
+        pendingResponses = pendingResponses.filter(x => x.id !== pendingId);
+        savePendingData(); // Local fallback
+        deletePendingDataOnServer(pendingId); // Panggil API Server hapus antrean
+      }
+
+      // Reset form
+      document.getElementById('karyaForm').reset();
+      currentPosterDataUrl = '';
+      document.getElementById('posterPreviewImg').classList.add('hidden');
+      document.getElementById('posterPlaceholder').classList.remove('hidden');
+      document.getElementById('linkedRespondenAlert').classList.add('hidden');
+      document.getElementById('f_namaResponden').value = '';
+      document.getElementById('f_skorResponden').value = '';
+      document.getElementById('f_testimoniResponden').value = '';
+      document.getElementById('f_pendingId').value = '';
+      updateLiveScore();
+
+      renderCatalog();
+      switchTab('katalog');
+      showToast('Karya berhasil disimpan & diterbitkan ke Etalase Katalog Digital!');
+    }
+
+    // Hapus Karya dari Katalog
+    function deleteKarya(id) {
+      catalogItems = catalogItems.filter(i => i.id !== id);
+      saveCatalogData(); // fallback local
+      deleteCatalogDataOnServer(id); // API Server hapus
+      renderCatalog();
+      populateInstansiDropdowns();
+      showToast('Karya telah dihapus dari katalog dan kunci instansi dibuka kembali.');
+    }
+
+    // Kembalikan ke Tampilan & Data Awal
+    function resetToDefaultCatalog() {
+      catalogItems = JSON.parse(JSON.stringify(defaultCatalogItems));
+      pendingResponses = [];
+      activeFilter = 'ALL';
+      try {
+        localStorage.removeItem('ecoLontara_catalog_v2');
+        localStorage.removeItem('ecoLontara_pending_v2');
+      } catch (e) {}
+      const searchEl = document.getElementById('searchInput');
+      if (searchEl) searchEl.value = '';
+      closeModal('modalQuestionnaire');
+      closeModal('modalReport');
+      closeModal('modalPoster');
+      setFilter('ALL');
+      switchTab('katalog');
+      populateInstansiDropdowns();
+      renderPendingQuestionnaires();
+      showToast('Aplikasi telah dikembalikan ke tampilan awal!');
+    }
+
+    // Buka Modal Laporan Eksekutif
+    function openReport(id) {
+      const item = catalogItems.find(x => x.id === id);
+      if (!item) return;
+
+      document.getElementById('r_instansi').textContent = item.instansi;
+      document.getElementById('r_kategori').textContent = item.kategori;
+      document.getElementById('r_kelompok').textContent = item.kelompok;
+      document.getElementById('r_kelas').textContent = item.kelas;
+      document.getElementById('r_totalSkor').textContent = item.totalSkor;
+
+      const badge = document.getElementById('r_predikatBadge');
+      badge.textContent = item.predikat.toUpperCase();
+      badge.className = `inline-block px-3 py-1 rounded-full text-xs font-extrabold ${getPredikatBadgeClass(item.predikat)}`;
+
+      document.getElementById('r_p1').textContent = `${item.pilar1} / 20`;
+      document.getElementById('r_p2').textContent = `${item.pilar2} / 20`;
+      document.getElementById('r_p3').textContent = `${item.pilar3} / 20`;
+
+      document.getElementById('r_fakta').textContent = item.faktaPositif;
+      document.getElementById('r_masalah').textContent = item.permasalahan;
+      document.getElementById('r_sol1').textContent = item.solusi1;
+      document.getElementById('r_sol2').textContent = item.solusi2;
+      document.getElementById('r_sol3').textContent = item.solusi3;
+
+      document.getElementById('r_skorResponden').textContent = `Indeks: ${item.skorResponden || 85}/100`;
+      document.getElementById('r_namaResponden').textContent = item.namaResponden || 'Perwakilan Instansi Mitra';
+      document.getElementById('r_testimoniResponden').textContent = `"${item.testimoniResponden || '-'}"`;
+
+      openModal('modalReport');
+    }
+
+    // Buka Modal Poster & QR
+    function openPoster(id) {
+      const item = catalogItems.find(x => x.id === id);
+      if (!item) return;
+
+      document.getElementById('mP_img').src = item.posterUrl;
+      document.getElementById('mP_download').href = item.posterUrl;
+      document.getElementById('mP_judul').textContent = item.judulPoster;
+      document.getElementById('mP_tagline').textContent = `"${item.tagline}"`;
+      document.getElementById('mP_instansi').textContent = item.instansi;
+      document.getElementById('mP_kelompok').textContent = item.kelompok;
+
+      const qrBox = document.getElementById('qrcodeBox');
+      qrBox.innerHTML = '';
+      new QRCode(qrBox, {
+        text: `ECO-LONTARA SMKN 1 Parepare | Instansi: ${item.instansi} | Kampanye: ${item.judulPoster} (${item.predikat} - ${item.totalSkor}/60)`,
+        width: 136,
+        height: 136,
+        colorDark: "#064e3b",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+
+      openModal('modalPoster');
+    }
+
+    // Verifikasi Kredensial Siswa / Guru pada Menu Tambahkan Karya
+    function checkStudentPin() {
+      const inputVal = document.getElementById('studentPinInput').value.trim();
+      if (inputVal === accessCredentials.siswa || inputVal === accessCredentials.guru) {
+        isStudentUnlocked = true;
+        document.getElementById('studentPinGate').classList.add('hidden');
+        document.getElementById('generatorProtectedContent').classList.remove('hidden');
+        document.getElementById('studentPinError').classList.add('hidden');
+        document.getElementById('studentPinInput').value = '';
+        populateInstansiDropdowns();
+        renderPendingQuestionnaires();
+        showToast('Akses Tambahkan Karya berhasil dibuka!');
+      } else {
+        document.getElementById('studentPinError').classList.remove('hidden');
+      }
+    }
+
+    function logoutStudentGate() {
+      isStudentUnlocked = false;
+      document.getElementById('generatorProtectedContent').classList.add('hidden');
+      document.getElementById('studentPinGate').classList.remove('hidden');
+      document.getElementById('studentPinInput').value = '';
+      showToast('Menu Tambahkan Karya telah dikunci kembali.');
+    }
+
+    // Evaluasi Guru & Manajemen Password
+    function checkPin() {
+      const pin = document.getElementById('pinInput').value.trim();
+      if (pin === accessCredentials.guru) {
+        isTeacherUnlocked = true;
+        // Jika Guru sudah login, otomatis buka juga kunci di menu Tambahkan Karya
+        isStudentUnlocked = true;
+        document.getElementById('studentPinGate').classList.add('hidden');
+        document.getElementById('generatorProtectedContent').classList.remove('hidden');
+
+        document.getElementById('pinGate').classList.add('hidden');
+        document.getElementById('evaluasiContent').classList.remove('hidden');
+        document.getElementById('pinError').classList.add('hidden');
+        document.getElementById('pinInput').value = '';
+        syncCredentialInputs();
+        populateTeacherEvalDropdown();
+        showToast('Mode Evaluasi Guru berhasil dibuka!');
+      } else {
+        document.getElementById('pinError').classList.remove('hidden');
+      }
+    }
+
+    function logoutTeacherGate() {
+      isTeacherUnlocked = false;
+      document.getElementById('evaluasiContent').classList.add('hidden');
+      document.getElementById('pinGate').classList.remove('hidden');
+      document.getElementById('pinInput').value = '';
+      showToast('Anda telah keluar dari Mode Evaluasi Guru.');
+    }
+
+    function syncCredentialInputs() {
+      const guruInput = document.getElementById('settingPassGuru');
+      const siswaInput = document.getElementById('settingPassSiswa');
+      if (guruInput) guruInput.value = accessCredentials.guru;
+      if (siswaInput) siswaInput.value = accessCredentials.siswa;
+    }
+
+    async function saveAccessCredentials() {
+      const newPassGuru = document.getElementById('settingPassGuru').value.trim();
+      const newPassSiswa = document.getElementById('settingPassSiswa').value.trim();
+
+      if (!newPassGuru || !newPassSiswa) {
+        showToast('Password Guru dan Password Siswa tidak boleh kosong!');
+        return;
+      }
+
+      accessCredentials.guru = newPassGuru;
+      accessCredentials.siswa = newPassSiswa;
+
+      try {
+        localStorage.setItem('ecoLontara_akses_v1', JSON.stringify(accessCredentials));
+      } catch (e) {}
+
+      if (!isBackendConfigured()) {
+        showToast('Password Guru & Siswa berhasil diperbarui (Tersimpan Lokal)!');
+        return;
+      }
+
+      showToast('Menyimpan kredensial baru ke Google Sheet Akses...');
+      try {
+        await fetch(getActiveScriptUrl(), {
+          method: 'POST',
+          redirect: 'follow',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'updateAkses',
+            data: {
+              passwordGuru: newPassGuru,
+              passwordSiswa: newPassSiswa
+            }
+          })
+        });
+        showToast('Password Guru & Siswa berhasil disimpan ke Sheet "Akses"!');
+      } catch (e) {
+        showToast('Gagal menyimpan ke server, namun tersimpan di perangkat ini.');
+      }
+    }
+
+    function populateTeacherEvalDropdown() {
+      const sel = document.getElementById('evalSelectKarya');
+      if (!sel) return;
+      if (catalogItems.length === 0) {
+        sel.innerHTML = `<option value="">-- Belum ada karya siswa --</option>`;
+        return;
+      }
+      sel.innerHTML = catalogItems.map(i => `<option value="${i.id}">${i.instansi} — ${i.kelompok}</option>`).join('');
+      loadEvalItem();
+    }
+
+    function loadEvalItem() {
+      const id = document.getElementById('evalSelectKarya').value;
+      const item = catalogItems.find(x => x.id === id);
+      if (!item) return;
+
+      document.getElementById('evalCatatan').value = item.catatanGuru || '';
+      document.getElementById('evalRespondenInfo').textContent =
+        `Skor Observasi Responden Instansi: ${item.skorResponden || '-'} / 100 (${item.namaResponden || 'Belum ada responden'})`;
+      calcTeacherGrade();
+    }
+
+    function calcTeacherGrade() {
+      const v1 = Number(document.getElementById('eval1').value);
+      const v2 = Number(document.getElementById('eval2').value);
+      const v3 = Number(document.getElementById('eval3').value);
+      const v4 = Number(document.getElementById('eval4').value);
+
+      document.getElementById('lblEval1').textContent = v1;
+      document.getElementById('lblEval2').textContent = v2;
+      document.getElementById('lblEval3').textContent = v3;
+      document.getElementById('lblEval4').textContent = v4;
+
+      const finalScore = (v1 * 0.30) + (v2 * 0.25) + (v3 * 0.25) + (v4 * 0.20);
+      document.getElementById('finalGradeNumber').textContent = finalScore.toFixed(1);
+
+      let letter = 'Predikat A (Sangat Baik)';
+      if (finalScore < 75) letter = 'Predikat C (Cukup)';
+      else if (finalScore < 85) letter = 'Predikat B (Baik)';
+      document.getElementById('finalGradeLetter').textContent = letter;
+
+      return Number(finalScore.toFixed(1));
+    }
+
+    async function saveTeacherEvaluation() {
+      const id = document.getElementById('evalSelectKarya').value;
+      const item = catalogItems.find(x => x.id === id);
+      if (!item) return;
+
+      item.nilaiGuru = calcTeacherGrade();
+      item.catatanGuru = document.getElementById('evalCatatan').value.trim();
+
+      try { localStorage.setItem('ecoLontara_catalog_v2', JSON.stringify(catalogItems)); } catch (e) {}
+
+      if (isBackendConfigured()) {
+        try {
+          await fetch(getActiveScriptUrl(), {
+            method: 'POST',
+            redirect: 'follow',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              action: 'updateNilaiGuru',
+              data: { id: item.id, nilaiGuru: item.nilaiGuru, catatanGuru: item.catatanGuru }
+            })
+          });
+        } catch (e) {}
+      }
+
+      renderCatalog();
+      showToast(`Nilai evaluasi untuk ${item.kelompok} (${item.nilaiGuru}) berhasil disimpan!`);
+    }
+
+    // Helper Modal & Toast
+    function openModal(id) {
+      const m = document.getElementById(id);
+      if (!m) return;
+      m.classList.remove('hidden');
+      m.classList.add('flex');
+    }
+
+    function closeModal(id) {
+      const m = document.getElementById(id);
+      if (!m) return;
+      m.classList.add('hidden');
+      m.classList.remove('flex');
+    }
+
+    let toastTimer = null;
+    function showToast(msg) {
+      const box = document.getElementById('toastBox');
+      const text = document.getElementById('toastMsg');
+      if (!box || !text) return;
+      text.textContent = msg;
+      box.classList.remove('hidden');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        box.classList.add('hidden');
+      }, 3600);
+    }
+
+    // Inisialisasi Saat Halaman Dimuat
+    window.addEventListener('DOMContentLoaded', () => {
+      loadInitialData();
+      populateInstansiDropdowns();
+      updateLiveScore();
+    });
+  </script>
+</body>
+</html>
