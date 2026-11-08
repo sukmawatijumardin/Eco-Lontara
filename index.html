@@ -161,8 +161,8 @@
         <!-- Pojok Kanan Atas: Foto & Nama "Sukmawati" Tanpa Kotak Pembungkus -->
         <div class="flex flex-col items-center shrink-0 select-none">
           <div onclick="document.getElementById('guruPhotoInput').click()" title="Klik untuk unggah/ganti foto" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-amber-300 shadow-md cursor-pointer bg-emerald-800/70 flex items-center justify-center hover:scale-105 transition">
-            <img id="guruPhotoImg" src="" alt="Sukmawati" class="w-full h-full object-cover hidden" />
-            <i id="guruPhotoDefaultIcon" class="fa-solid fa-user-tie text-amber-200 text-xl sm:text-2xl"></i>
+            <img id="guruPhotoImg" src="sukma.jpg" alt="Sukmawati" class="w-full h-full object-cover" onerror="this.classList.add('hidden'); document.getElementById('guruPhotoDefaultIcon').classList.remove('hidden');" />
+            <i id="guruPhotoDefaultIcon" class="fa-solid fa-user-tie text-amber-200 text-xl sm:text-2xl hidden"></i>
           </div>
           <input type="file" id="guruPhotoInput" accept="image/*" class="hidden" onchange="handleGuruPhotoUpload(event)" />
           <span class="mt-1.5 text-xs sm:text-sm font-bold text-amber-200 tracking-wide drop-shadow">Sukmawati</span>
@@ -215,23 +215,31 @@
   <nav class="sticky top-0 z-30 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200 no-print">
     <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-2">
       <div class="grid grid-cols-4 gap-1.5 sm:gap-3">
-        <button onclick="switchTab('katalog')" id="tabBtn-katalog" class="tab-btn active-tab flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs md:text-sm transition-all bg-emerald-800 text-white shadow-sm">
-          <span class="px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 font-extrabold text-[9px] sm:text-[10px]">1</span>
+        <button type="button" onclick="switchTab('katalog')" id="tabBtn-katalog" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs md:text-sm transition-all bg-emerald-800 text-white shadow-sm">
+          <span id="tabBadge-katalog" class="px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 font-extrabold text-[9px] sm:text-[10px] flex items-center gap-1">
+            <i class="fa-solid fa-book-open"></i> 1
+          </span>
           <span class="truncate">Etalase Katalog</span>
         </button>
 
-        <button onclick="switchTab('generator')" id="tabBtn-generator" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs md:text-sm transition-all bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800">
-          <span class="px-1.5 py-0.5 rounded bg-slate-300 text-slate-800 font-extrabold text-[9px] sm:text-[10px]">2</span>
+        <button type="button" onclick="switchTab('generator')" id="tabBtn-generator" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs md:text-sm transition-all bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800">
+          <span id="tabBadge-generator" class="px-1.5 py-0.5 rounded bg-slate-300 text-slate-800 font-extrabold text-[9px] sm:text-[10px] flex items-center gap-1">
+            <i class="fa-solid fa-file-circle-plus"></i> 2
+          </span>
           <span class="truncate">Tambahkan Karya</span>
         </button>
 
-        <button onclick="switchTab('panduan')" id="tabBtn-panduan" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs md:text-sm transition-all bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800">
-          <span class="px-1.5 py-0.5 rounded bg-slate-300 text-slate-800 font-extrabold text-[9px] sm:text-[10px]">3</span>
+        <button type="button" onclick="switchTab('panduan')" id="tabBtn-panduan" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs md:text-sm transition-all bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800">
+          <span id="tabBadge-panduan" class="px-1.5 py-0.5 rounded bg-slate-300 text-slate-800 font-extrabold text-[9px] sm:text-[10px] flex items-center gap-1">
+            <i class="fa-solid fa-compass-drafting"></i> 3
+          </span>
           <span class="truncate">Panduan &amp; Rubrik</span>
         </button>
 
-        <button onclick="switchTab('evaluasi')" id="tabBtn-evaluasi" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs md:text-sm transition-all bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800">
-          <span class="px-1.5 py-0.5 rounded bg-slate-300 text-slate-800 font-extrabold text-[9px] sm:text-[10px]">4</span>
+        <button type="button" onclick="switchTab('evaluasi')" id="tabBtn-evaluasi" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs md:text-sm transition-all bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800">
+          <span id="tabBadge-evaluasi" class="px-1.5 py-0.5 rounded bg-slate-300 text-slate-800 font-extrabold text-[9px] sm:text-[10px] flex items-center gap-1">
+            <i class="fa-solid fa-user-check"></i> 4
+          </span>
           <span class="truncate">Evaluasi Guru</span>
         </button>
       </div>
@@ -1455,10 +1463,12 @@
         const savedPhoto = localStorage.getItem('ecoLontara_guruPhoto');
         if (savedPhoto) {
           const img = document.getElementById('guruPhotoImg');
-          const icon = document.getElementById('guruPhotoDefaultIcon');
-          img.src = savedPhoto;
-          img.classList.remove('hidden');
-          icon.classList.add('hidden');
+          const avatar = document.getElementById('guruPhotoDefaultAvatar');
+          if (img) {
+            img.src = savedPhoto;
+            img.classList.remove('hidden');
+          }
+          if (avatar) avatar.classList.add('hidden');
         }
       } catch (e) {}
     }
@@ -1469,28 +1479,47 @@
       const reader = new FileReader();
       reader.onload = function(e) {
         const dataUrl = e.target.result;
-        document.getElementById('guruPhotoImg').src = dataUrl;
-        document.getElementById('guruPhotoImg').classList.remove('hidden');
-        document.getElementById('guruPhotoDefaultIcon').classList.add('hidden');
+        const img = document.getElementById('guruPhotoImg');
+        const avatar = document.getElementById('guruPhotoDefaultAvatar');
+        if (img) {
+          img.src = dataUrl;
+          img.classList.remove('hidden');
+        }
+        if (avatar) avatar.classList.add('hidden');
         try { localStorage.setItem('ecoLontara_guruPhoto', dataUrl); } catch (err) {}
-        showToast('Foto profil berhasil diperbarui!');
+        showToast('Foto profil Sukmawati berhasil diperbarui!');
       };
       reader.readAsDataURL(file);
     }
 
-    // Navigasi Tab
+    // Navigasi Tab (Fix Perubahan Warna Hijau & Ikon Lencana Saat Pindah Menu)
     function switchTab(tabName) {
       ['katalog', 'generator', 'panduan', 'evaluasi'].forEach(t => {
-        document.getElementById(`tab-${t}`).classList.add('hidden');
+        const section = document.getElementById(`tab-${t}`);
         const btn = document.getElementById(`tabBtn-${t}`);
-        btn.classList.remove('bg-emerald-800', 'text-white', 'shadow-sm');
-        btn.classList.add('bg-slate-100', 'text-slate-700');
+        const badge = document.getElementById(`tabBadge-${t}`);
+
+        if (section) section.classList.add('hidden');
+
+        if (btn) {
+          btn.className = 'tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs md:text-sm transition-all bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800';
+        }
+        if (badge) {
+          badge.className = 'px-1.5 py-0.5 rounded bg-slate-300 text-slate-800 font-extrabold text-[9px] sm:text-[10px] flex items-center gap-1 transition-all';
+        }
       });
 
-      document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+      const activeSection = document.getElementById(`tab-${tabName}`);
       const activeBtn = document.getElementById(`tabBtn-${tabName}`);
-      activeBtn.classList.remove('bg-slate-100', 'text-slate-700');
-      activeBtn.classList.add('bg-emerald-800', 'text-white', 'shadow-sm');
+      const activeBadge = document.getElementById(`tabBadge-${tabName}`);
+
+      if (activeSection) activeSection.classList.remove('hidden');
+      if (activeBtn) {
+        activeBtn.className = 'tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs md:text-sm transition-all bg-emerald-800 text-white shadow-md ring-2 ring-emerald-600/30';
+      }
+      if (activeBadge) {
+        activeBadge.className = 'px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 font-extrabold text-[9px] sm:text-[10px] flex items-center gap-1 transition-all shadow-sm';
+      }
 
       if (tabName === 'generator') {
         populateInstansiDropdowns();
