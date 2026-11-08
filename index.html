@@ -161,7 +161,7 @@
 
         <!-- Pojok Kanan Atas: Foto & Nama "Sukmawati" Tanpa Kotak Pembungkus -->
         <div class="flex flex-col items-center shrink-0 select-none">
-          <div onclick="document.getElementById('guruPhotoInput').click()" title="Klik untuk unggah/ganti foto" class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full overflow-hidden border-2 border-amber-300 shadow-md cursor-pointer bg-emerald-800/70 flex items-center justify-center hover:scale-105 transition">
+          <div onclick="triggerGuruPhotoUpload()" title="Klik untuk unggah/ganti foto (Khusus Guru)" class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full overflow-hidden border-2 border-amber-300 shadow-md cursor-pointer bg-emerald-800/70 flex items-center justify-center hover:scale-105 transition">
             <img id="guruPhotoImg" src="sukma.jpg" alt="Sukmawati" class="w-full h-full object-cover" onerror="this.classList.add('hidden'); document.getElementById('guruPhotoDefaultIcon').classList.remove('hidden');" />
             <i id="guruPhotoDefaultIcon" class="fa-solid fa-user-tie text-amber-200 text-lg sm:text-xl md:text-2xl hidden"></i>
           </div>
@@ -1457,6 +1457,14 @@
         showToast('Logo berhasil diperbarui!');
       };
       reader.readAsDataURL(file);
+    }
+
+    function triggerGuruPhotoUpload() {
+      if (isTeacherUnlocked) {
+        document.getElementById('guruPhotoInput').click();
+      } else {
+        showToast('🔒 Hanya Guru/Admin yang dapat mengubah foto profil. Silakan buka akses di menu Evaluasi Guru.');
+      }
     }
 
     function loadSavedGuruPhoto() {
