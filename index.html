@@ -846,6 +846,279 @@
   </main>
 
   <!-- ===================================================== -->
+  <!-- MODAL 1: KUESIONER OBSERVASI RESPONDEN INSTANSI       -->
+  <!-- ===================================================== -->
+  <div id="modalQuestionnaire" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/75 backdrop-blur-sm p-3 sm:p-5 overflow-y-auto no-print">
+    <div class="bg-white rounded-3xl max-w-3xl w-full shadow-2xl border border-slate-200 overflow-hidden my-auto max-h-[92vh] flex flex-col">
+      <!-- Header Modal -->
+      <div class="lontara-bg text-white px-5 py-4 sm:px-6 sm:py-5 flex items-center justify-between gap-4 shrink-0">
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-extrabold text-[10px] uppercase tracking-wider mb-1">
+            Instrumen Observasi Mitra DUDI / Instansi
+          </span>
+          <h3 class="text-base sm:text-lg font-extrabold">Form Kuesioner Responden Instansi</h3>
+        </div>
+        <button type="button" onclick="closeModal('modalQuestionnaire')" class="w-9 h-9 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Body Form Kuesioner -->
+      <form id="respondentForm" onsubmit="submitRespondentQuestionnaire(event)" class="p-5 sm:p-6 overflow-y-auto space-y-5 flex-1">
+        <!-- Identitas Instansi & Responden -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-emerald-50/60 p-4 rounded-2xl border border-emerald-200/80">
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-extrabold text-slate-800 mb-1">Pilih / Ketik Nama Instansi di Kota Parepare *</label>
+            <select id="q_instansiSelect" onchange="handleQInstansiChange()" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 mb-2"></select>
+            <input type="text" id="q_instansiManual" placeholder="Ketik nama instansi Anda secara manual..." class="w-full px-3.5 py-2.5 rounded-xl border border-amber-400 bg-amber-50 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 hidden" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Kategori Instansi *</label>
+            <select id="q_kategori" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600">
+              <option value="Instansi Pemerintah">Instansi Pemerintah</option>
+              <option value="BUMN / Perbankan">BUMN / Perbankan</option>
+              <option value="Perusahaan Swasta">Perusahaan Swasta</option>
+              <option value="Unit Sekolah / Pendidikan">Unit Sekolah / Pendidikan</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Nama Pejabat / Pegawai Responden *</label>
+            <input type="text" id="q_namaResponden" required placeholder="Contoh: Drs. H. Ahmad, M.Si." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+          </div>
+
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Jabatan / Divisi Responden *</label>
+            <input type="text" id="q_jabatanResponden" required placeholder="Contoh: Kasubag Umum & Kepegawaian" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+          </div>
+        </div>
+
+        <!-- Petunjuk & Skor Live Kuesioner -->
+        <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-900 text-white px-4 py-3 rounded-2xl">
+          <div class="text-xs">
+            <span class="font-bold text-amber-300">Petunjuk Skala (1–4):</span>
+            <span class="text-slate-300 ml-1">1 = Belum Diterapkan • 2 = Kadang-kadang • 3 = Sering • 4 = Selalu / Membudaya</span>
+          </div>
+          <div class="flex items-center gap-3 text-xs font-extrabold">
+            <span>Skor Eco: <strong id="q_liveTotal" class="text-amber-300">45</strong>/60</span>
+            <span class="px-2.5 py-1 rounded-lg bg-emerald-700 text-white">Indeks: <span id="q_liveIndex">75</span>/100</span>
+          </div>
+        </div>
+
+        <!-- 15 Daftar Pertanyaan Observasi -->
+        <div id="questionnaireQuestionsContainer" class="space-y-2.5"></div>
+
+        <!-- Unggah Bukti Foto / Poster & Testimoni -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-200">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1.5">Unggah Foto Poster / Bukti Observasi (Opsional)</label>
+            <div onclick="document.getElementById('q_posterInput').click()" class="border-2 border-dashed border-emerald-300 hover:border-emerald-600 rounded-2xl p-3 text-center cursor-pointer bg-emerald-50/40 transition">
+              <img id="q_posterPreview" src="" alt="Preview" class="w-full h-32 object-cover rounded-xl mb-1 hidden" />
+              <div id="q_posterPlaceholder" class="py-4 space-y-1">
+                <i class="fa-solid fa-camera text-emerald-700 text-xl"></i>
+                <div class="text-xs font-bold text-emerald-900">Klik Pilih Foto / Poster</div>
+                <p class="text-[10px] text-slate-500">JPG / PNG</p>
+              </div>
+            </div>
+            <input type="file" id="q_posterInput" accept="image/*" class="hidden" onchange="handleQPosterFile(event)" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1.5">Testimoni / Apresiasi Responden terhadap Kampanye Siswa *</label>
+            <textarea id="q_testimoni" rows="4" required placeholder="Tuliskan tanggapan atau kesan instansi terhadap kegiatan observasi Eco-Office siswa SMKN 1 Parepare..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"></textarea>
+          </div>
+        </div>
+
+        <!-- Tombol Kirim Kuesioner -->
+        <div class="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
+          <button type="button" onclick="closeModal('modalQuestionnaire')" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs">
+            Batal
+          </button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs sm:text-sm shadow-md flex items-center gap-2">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span>Kirim Hasil Observasi Responden</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================== -->
+  <!-- MODAL 2: ONE-PAGE EXECUTIVE REPORT (PRATINJAU & CETAK)-->
+  <!-- ===================================================== -->
+  <div id="modalReport" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/75 backdrop-blur-sm p-3 sm:p-5 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-3xl w-full shadow-2xl border border-slate-200 overflow-hidden my-auto">
+      <!-- Bar Aksi Modal (Tidak Ikut Tercetak) -->
+      <div class="bg-slate-900 text-white px-5 py-3.5 flex items-center justify-between no-print">
+        <div class="flex items-center gap-2 text-xs font-bold">
+          <i class="fa-solid fa-file-invoice text-amber-400"></i>
+          <span>One-Page Executive Report • ECO-LONTARA</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="window.print()" class="px-3.5 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs flex items-center gap-1.5">
+            <i class="fa-solid fa-print"></i> Cetak / Simpan PDF
+          </button>
+          <button onclick="closeModal('modalReport')" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Area Cetak Laporan -->
+      <div id="printArea" class="p-6 sm:p-8 space-y-5 text-slate-900">
+        <!-- Kop Laporan -->
+        <div class="border-b-2 border-emerald-900 pb-4 flex items-start justify-between gap-4">
+          <div>
+            <div class="text-[11px] font-extrabold uppercase tracking-widest text-emerald-800">SMKN 1 PAREPARE • PROGRAM KEAHLIAN MPLB</div>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-950 mt-0.5">LAPORAN EKSEKUTIF AUDIT BUDAYA KERJA ECO-GREEN</h2>
+            <p class="text-xs text-slate-600 italic">Elektronik Cek Observasi Lingkungan Kantor Tertib, Asri, dan Ramah Alam (ECO-LONTARA)</p>
+          </div>
+          <div class="text-right shrink-0">
+            <span id="r_predikatBadge" class="inline-block px-3 py-1 rounded-full text-xs font-extrabold bg-amber-400 text-slate-950">GOLD</span>
+            <div class="text-xs font-bold text-slate-600 mt-1">Total Skor: <strong id="r_totalSkor" class="text-slate-950">0</strong>/60</div>
+          </div>
+        </div>
+
+        <!-- Identitas Instansi & Kelompok -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs">
+          <div>
+            <span class="text-slate-500 block">Instansi / Kantor Mitra:</span>
+            <strong id="r_instansi" class="text-sm text-slate-950 font-extrabold">-</strong>
+            <span id="r_kategori" class="inline-block mt-0.5 px-2 py-0.5 rounded bg-emerald-100 text-emerald-900 font-bold text-[10px]">-</span>
+          </div>
+          <div>
+            <span class="text-slate-500 block">Tim Pengamat (Kelompok Siswa):</span>
+            <strong id="r_kelompok" class="text-slate-900 font-bold">-</strong>
+            <div class="text-slate-600">Kelas: <span id="r_kelas">-</span></div>
+          </div>
+        </div>
+
+        <!-- Rincian 3 Pilar -->
+        <div class="grid grid-cols-3 gap-3 text-center">
+          <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200">
+            <div class="text-[10px] font-bold uppercase text-emerald-800">Pilar 1 • Hemat Kertas</div>
+            <div id="r_p1" class="text-lg font-extrabold text-emerald-950 mt-0.5">0 / 20</div>
+          </div>
+          <div class="p-3 rounded-xl bg-amber-50 border border-amber-200">
+            <div class="text-[10px] font-bold uppercase text-amber-800">Pilar 2 • Listrik &amp; Air</div>
+            <div id="r_p2" class="text-lg font-extrabold text-amber-950 mt-0.5">0 / 20</div>
+          </div>
+          <div class="p-3 rounded-xl bg-teal-50 border border-teal-200">
+            <div class="text-[10px] font-bold uppercase text-teal-800">Pilar 3 • Hijau &amp; Sampah</div>
+            <div id="r_p3" class="text-lg font-extrabold text-teal-950 mt-0.5">0 / 20</div>
+          </div>
+        </div>
+
+        <!-- Fakta & Temuan -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+          <div class="p-4 rounded-2xl bg-white border border-slate-200 space-y-1">
+            <h4 class="font-extrabold text-emerald-900 uppercase text-[11px]">Fakta &amp; Budaya Positif (Best Practice)</h4>
+            <p id="r_fakta" class="text-slate-700 leading-relaxed">-</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-white border border-slate-200 space-y-1">
+            <h4 class="font-extrabold text-rose-800 uppercase text-[11px]">Temuan Permasalahan / Pemborosan</h4>
+            <p id="r_masalah" class="text-slate-700 leading-relaxed">-</p>
+          </div>
+        </div>
+
+        <!-- 3 Rekomendasi Solusi -->
+        <div class="p-4 rounded-2xl bg-emerald-950 text-white space-y-2 text-xs">
+          <h4 class="font-extrabold text-amber-300 uppercase text-[11px]">3 Rekomendasi Solusi Aplikatif Siswa</h4>
+          <ul class="space-y-1.5 list-disc pl-4 text-emerald-50">
+            <li><strong>Efisiensi Kertas:</strong> <span id="r_sol1">-</span></li>
+            <li><strong>Hemat Energi:</strong> <span id="r_sol2">-</span></li>
+            <li><strong>Penghijauan &amp; Sampah:</strong> <span id="r_sol3">-</span></li>
+          </ul>
+        </div>
+
+        <!-- Evaluasi Responden Instansi -->
+        <div class="p-4 rounded-2xl bg-amber-50 border border-amber-300 text-xs space-y-1">
+          <div class="flex items-center justify-between">
+            <span class="font-extrabold text-amber-950 uppercase text-[11px]">Hasil Evaluasi &amp; Testimoni Responden Instansi</span>
+            <span id="r_skorResponden" class="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-extrabold text-[11px]">Indeks: 0/100</span>
+          </div>
+          <div id="r_namaResponden" class="font-bold text-slate-900">-</div>
+          <p id="r_testimoniResponden" class="italic text-slate-700">-</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================== -->
+  <!-- MODAL 3: POSTER KAMPANYE & QR CODE KATALOG            -->
+  <!-- ===================================================== -->
+  <div id="modalPoster" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/75 backdrop-blur-sm p-3 sm:p-5 overflow-y-auto no-print">
+    <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden my-auto">
+      <div class="lontara-bg text-white px-5 py-4 flex items-center justify-between">
+        <div>
+          <span class="text-[10px] uppercase tracking-wider text-amber-300 font-bold">Kampanye Digital 3 Pilar Eco-Green</span>
+          <h3 id="mP_judul" class="text-base sm:text-lg font-extrabold">-</h3>
+        </div>
+        <button onclick="closeModal('modalPoster')" class="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="p-5 sm:p-6 grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
+        <div class="md:col-span-7">
+          <img id="mP_img" src="" alt="Poster Kampanye" onerror="this.src='https://placehold.co/600x800/064e3b/ffffff?text=Poster+Kampanye'" class="w-full max-h-96 object-cover rounded-2xl shadow-md border border-slate-200" />
+        </div>
+        <div class="md:col-span-5 space-y-4 text-center md:text-left">
+          <div>
+            <div class="text-[11px] font-bold text-emerald-800 uppercase" id="mP_instansi">-</div>
+            <p id="mP_tagline" class="text-sm font-extrabold italic text-slate-900 mt-1">"-"</p>
+            <div id="mP_kelompok" class="text-xs text-slate-500 mt-1">-</div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col items-center">
+            <div id="qrcodeBox" class="p-2 bg-white rounded-xl shadow-sm"></div>
+            <span class="text-[10px] font-bold text-slate-500 mt-2">Scan QR Validasi Karya Katalog</span>
+          </div>
+
+          <a id="mP_download" href="#" download="Poster-Eco-Lontara.jpg" target="_blank" class="w-full py-2.5 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs flex items-center justify-center gap-2 transition">
+            <i class="fa-solid fa-download"></i> Unduh Poster
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================== -->
+  <!-- MODAL 4: KONFIRMASI HAPUS KARYA KHUSUS GURU           -->
+  <!-- ===================================================== -->
+  <div id="modalDeleteConfirm" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/75 backdrop-blur-sm p-4 no-print">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4 text-center">
+      <div class="w-14 h-14 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center text-2xl mx-auto">
+        <i class="fa-solid fa-user-shield"></i>
+      </div>
+      <div>
+        <h3 class="text-base sm:text-lg font-extrabold text-slate-900">Otorisasi Guru: Hapus Karya Katalog</h3>
+        <p id="delTargetTitle" class="text-xs font-bold text-emerald-800 mt-1"></p>
+        <p class="text-xs text-slate-500 mt-1">Hanya Guru yang dapat menghapus karya dari Etalase Katalog Digital. Masukkan Password Guru untuk melanjutkan.</p>
+      </div>
+      <div id="delPinInputWrapper" class="space-y-2">
+        <input type="password" id="delTeacherPinInput" onkeydown="if(event.key==='Enter') confirmTeacherDelete()" placeholder="Masukkan Password Guru" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-center font-bold tracking-widest text-sm focus:outline-none focus:ring-2 focus:ring-red-600" />
+        <p id="delPinError" class="text-xs text-red-600 font-bold hidden">Password Guru salah! Penghapusan dibatalkan.</p>
+      </div>
+      <div class="flex items-center gap-2.5 pt-2">
+        <button type="button" onclick="closeModal('modalDeleteConfirm')" class="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs">
+          Batal
+        </button>
+        <button type="button" onclick="confirmTeacherDelete()" class="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs shadow-md">
+          <i class="fa-solid fa-trash-can mr-1"></i> Hapus Permanen
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toastBox" class="fixed bottom-5 right-5 z-50 hidden bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-2xl border border-emerald-500/40 flex items-center gap-2.5 text-xs font-bold no-print">
+    <i class="fa-solid fa-circle-info text-amber-400 text-sm"></i>
+    <span id="toastMsg">Notifikasi</span>
+  </div>
+
+  <!-- ===================================================== -->
   <!-- SCRIPT UTAMA APLIKASI (OPTIMASI DEPLOY VERCEL + GAS)   -->
   <!-- ===================================================== -->
   <script>
@@ -1392,8 +1665,8 @@
                 <i class="fa-solid fa-qrcode"></i>
                 <span>Poster &amp; QR</span>
               </button>
-              <button onclick="deleteKarya('${item.id}')" title="Hapus Karya" class="w-9 h-9 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center transition">
-                <i class="fa-solid fa-trash-can text-xs"></i>
+              <button onclick="deleteKarya('${item.id}')" title="Hapus Karya (Khusus Guru)" class="w-9 h-9 rounded-xl ${isTeacherUnlocked ? 'bg-red-100 hover:bg-red-200 text-red-700' : 'bg-slate-100 hover:bg-red-50 text-slate-500 hover:text-red-600'} flex items-center justify-center transition">
+                <i class="fa-solid ${isTeacherUnlocked ? 'fa-trash-can' : 'fa-lock'} text-xs"></i>
               </button>
             </div>
           </article>
@@ -1745,14 +2018,50 @@
       showToast('Karya berhasil disimpan & diterbitkan ke Etalase Katalog Digital!');
     }
 
-    // Hapus Karya dari Katalog
+    // Hapus Karya dari Katalog (Hanya Dapat Dilakukan oleh Guru)
+    let pendingDeleteId = null;
+
     function deleteKarya(id) {
+      const target = catalogItems.find(i => i.id === id);
+      if (!target) return;
+
+      pendingDeleteId = id;
+      document.getElementById('delTargetTitle').textContent = `${target.instansi} (${target.kelompok})`;
+      document.getElementById('delPinError').classList.add('hidden');
+      document.getElementById('delTeacherPinInput').value = '';
+
+      const pinWrapper = document.getElementById('delPinInputWrapper');
+      if (isTeacherUnlocked) {
+        // Jika Guru sudah login di Mode Guru, tidak perlu mengetik ulang password
+        pinWrapper.classList.add('hidden');
+      } else {
+        pinWrapper.classList.remove('hidden');
+      }
+
+      openModal('modalDeleteConfirm');
+    }
+
+    function confirmTeacherDelete() {
+      if (!pendingDeleteId) return;
+
+      if (!isTeacherUnlocked) {
+        const pinInput = document.getElementById('delTeacherPinInput').value.trim();
+        if (pinInput !== accessCredentials.guru) {
+          document.getElementById('delPinError').classList.remove('hidden');
+          return;
+        }
+      }
+
+      const id = pendingDeleteId;
+      pendingDeleteId = null;
+      closeModal('modalDeleteConfirm');
+
       catalogItems = catalogItems.filter(i => i.id !== id);
       saveCatalogData(); // fallback local
       deleteCatalogDataOnServer(id); // API Server hapus
       renderCatalog();
       populateInstansiDropdowns();
-      showToast('Karya telah dihapus dari katalog dan kunci instansi dibuka kembali.');
+      showToast('Karya telah dihapus oleh Guru dan kunci instansi dibuka kembali.');
     }
 
     // Kembalikan ke Tampilan & Data Awal
@@ -1875,6 +2184,7 @@
         document.getElementById('pinInput').value = '';
         syncCredentialInputs();
         populateTeacherEvalDropdown();
+        renderCatalog();
         showToast('Mode Evaluasi Guru berhasil dibuka!');
       } else {
         document.getElementById('pinError').classList.remove('hidden');
@@ -1886,6 +2196,7 @@
       document.getElementById('evaluasiContent').classList.add('hidden');
       document.getElementById('pinGate').classList.remove('hidden');
       document.getElementById('pinInput').value = '';
+      renderCatalog();
       showToast('Anda telah keluar dari Mode Evaluasi Guru.');
     }
 
